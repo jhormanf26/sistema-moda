@@ -1,0 +1,243 @@
+/* === BOUTIQUE SYSTEM GLOBAL STYLES === */
+:root {
+    /* Color Palette - Boutique Theme */
+    --primary: #C9847A;        /* Rose Gold / Blush */
+    --primary-hover: #b5746b;
+    --secondary: #9B7FA6;      /* Mauve */
+    --success: #6BAB8E;        /* Sage Green */
+    --info: #E1B382;           /* Sand / Champagne */
+    --warning: #D4A574;        /* Warm Gold */
+    --danger: #cf6679;         /* Soft Red */
+    
+    /* Backgrounds & Surfaces */
+    --bg-main: #FBF7F5;        /* Very light warm gray/pink */
+    --bg-dark: #2B2431;        /* Deep Eggplant / Dark Mauve for Sidebar */
+    --bg-card: #FFFFFF;
+    
+    /* Text Colors */
+    --text-main: #4A4A4A;
+    --text-muted: #8b92a5;
+    --text-light: #FFFFFF;
+    
+    /* Borders & Shadows */
+    --border-color: #EEE4E1;
+    --shadow-sm: 0 2px 4px rgba(201,132,122,0.05);
+    --shadow-md: 0 4px 6px -1px rgba(201,132,122,0.1), 0 2px 4px -1px rgba(201,132,122,0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(201,132,122,0.1), 0 4px 6px -2px rgba(201,132,122,0.05);
+}
+
+/* Base Typography */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #2c2523;
+    font-weight: 700;
+}
+
+/* Typography Utilities */
+.page-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: #2c2523;
+    margin-bottom: 0.5rem;
+}
+
+.page-subtitle {
+    color: var(--text-muted);
+    font-weight: 400;
+    margin-bottom: 2rem;
+}
+
+/* Custom Buttons & Bootstrap Overrides */
+.btn-primary, .bg-primary {
+    background-color: var(--primary) !important;
+    border-color: var(--primary) !important;
+    color: white !important;
+}
+.text-primary { color: var(--primary) !important; }
+
+.btn-primary:hover {
+    background-color: var(--primary-hover) !important;
+    border-color: var(--primary-hover) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(201,132,122,0.3);
+}
+
+.btn-success, .bg-success {
+    background-color: var(--success) !important;
+    border-color: var(--success) !important;
+}
+.text-success { color: var(--success) !important; }
+
+.btn-success:hover {
+    background-color: #5a9479 !important;
+    border-color: #5a9479 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(107,171,142,0.3);
+}
+
+/* Glass Card & Widget Cards */
+.glass-card, .widget-card {
+    background: var(--bg-card);
+    border-radius: 16px;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.glass-card:hover, .widget-card:hover {
+    box-shadow: var(--shadow-lg);
+}
+
+.card-header, .widget-header-dark {
+    background: transparent;
+    border-bottom: 1px solid var(--border-color);
+    padding: 1.25rem 1.5rem;
+}
+
+.card-title-modern {
+    font-weight: 600;
+    color: #374151;
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+/* KPI Cards */
+.kpi-card {
+    background: linear-gradient(145deg, #ffffff, #fcfcfc);
+    border-radius: 20px;
+    padding: 1.8rem 1.5rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.02);
+    border: 1px solid rgba(255,255,255,0.8);
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+    overflow: hidden;
+    border-bottom: 4px solid var(--kpi-color, var(--primary));
+}
+
+.kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle at top right, var(--kpi-shadow, rgba(201,132,122,0.1)), transparent 70%);
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.kpi-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.08), 0 5px 15px rgba(0,0,0,0.04);
+    border-color: var(--kpi-color, var(--primary));
+}
+
+.kpi-card:hover::before {
+    opacity: 1;
+}
+
+.kpi-icon-wrap {
+    width: 60px;
+    height: 60px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+    flex-shrink: 0;
+    background: var(--kpi-bg, rgba(201,132,122,0.12));
+    color: var(--kpi-color, var(--primary));
+    position: relative;
+    z-index: 1;
+}
+
+.kpi-icon-wrap i {
+    transition: transform 0.3s ease;
+}
+
+.kpi-card:hover .kpi-icon-wrap i {
+    transform: scale(1.15) rotate(5deg);
+}
+
+.kpi-data {
+    flex-grow: 1;
+    z-index: 1;
+}
+
+.kpi-title {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 0.4rem;
+}
+
+.kpi-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--kpi-color, var(--primary));
+    line-height: 1.1;
+    margin: 0;
+}
+
+/* Sidebar Branding */
+.bg-dark {
+    background-color: var(--bg-dark) !important;
+}
+
+.boutique-menu .nav-link {
+    color: rgba(255,255,255,0.7);
+    border-radius: 8px;
+    padding: 0.70rem 1rem;
+    transition: all 0.2s ease;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.boutique-menu .nav-link:hover {
+    background-color: rgba(255,255,255,0.08);
+    color: var(--info); /* Champagne cálido en Hover */
+    transform: translateX(3px);
+}
+
+.boutique-menu .nav-link.active {
+    background-color: var(--primary) !important;
+    color: white !important;
+    box-shadow: 0 4px 10px rgba(201,132,122,0.4);
+    font-weight: 600;
+}
+
+/* Modificador especial para el botón verde de Vender si está activo */
+.boutique-menu .nav-link.active-tpv {
+    background-color: #5a9479 !important; /* Verde un poco más oscuro o vibrante */
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(107,171,142,0.5);
+    transform: scale(1.02);
+}
+
+/* Fix for Sidebar layout */
+@media (min-width: 992px) {
+    .offcanvas-lg {
+        position: fixed !important;
+        top: 0;
+    }
+    .main-content-area {
+        margin-left: 260px;
+        width: calc(100% - 260px);
+        padding: 2rem !important; /* Default padding for dashboard, TPV might override */
+    }
+}
+@media (max-width: 767px) {
+    .offcanvas-open {
+        overflow: hidden !important;
+    }
+}

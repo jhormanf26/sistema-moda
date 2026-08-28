@@ -1,0 +1,180 @@
+import os
+import subprocess
+
+html_content = """<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Documentación Técnica - Tienda de Moda</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+  :root { --primary: #c9748e; --primary-dark: #a5566e; --accent: #e8b4c0; --gold: #d4a849; --dark: #1a1a2e; --dark2: #16213e; --text: #2d2d2d; --text-light: #666; --border: #e0e0e0; --bg-light: #fdf6f8; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Inter',sans-serif; color:var(--text); background:#fff; font-size:11pt; line-height:1.6; }
+  .cover { width:100%; height:100vh; background:linear-gradient(135deg, #1a1a2e, #a5566e); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:40px; color:#fff; page-break-after:always; }
+  .cover h1 { font-size:40pt; font-weight:800; margin-bottom:15px; }
+  .cover .subtitle { font-size:16pt; margin-bottom:40px; color:rgba(255,255,255,0.8); }
+  .cover-logo { font-size:50pt; margin-bottom:20px; }
+  .page-break { page-break-after:always; }
+  .section { padding:40px 50px; }
+  h2 { font-size:24pt; color:var(--dark); border-bottom:3px solid var(--primary); padding-bottom:10px; margin-bottom:20px; }
+  h3 { color:var(--primary-dark); font-size:14pt; margin:20px 0 10px; }
+  .tech-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:15px; margin:20px 0; }
+  .card { border:1px solid var(--border); background:var(--bg-light); padding:15px; border-radius:8px; border-left:4px solid var(--primary); margin-bottom:15px; }
+  .card h4 { color:var(--dark); margin-bottom:5px; font-size:12pt; }
+  .code { background:#1e1e2e; color:#fff; padding:15px; border-radius:8px; font-family:monospace; margin:15px 0; font-size:9pt; }
+  .cred-box { background:#16213e; color:#fff; padding:20px; border-radius:10px; margin:20px 0; border:1px solid #c9748e; }
+  ul, ol { padding-left:20px; margin-bottom:15px; }
+  li { margin-bottom:8px; }
+  @page { margin: 0; size: A4; }
+  @media print { .section { padding:40px; } }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="cover-logo">👗</div>
+  <h1>Manual del <span>Sistema</span><br>Tienda de Moda</h1>
+  <div class="subtitle">Documentación Técnica, Funcionalidades y Despliegue</div>
+  <p>Versión 1.0.0 | PHP + MySQL</p>
+</div>
+
+<div class="section page-break">
+  <h2>1. Índice de Contenidos</h2>
+  <ol>
+    <li>Tecnologías Utilizadas</li>
+    <li>Funcionalidades del Sistema</li>
+    <li>Base de Datos</li>
+    <li>Instalación y Ejecución CMD</li>
+    <li>Credenciales de Acceso</li>
+    <li>Despliegue y Hosting</li>
+  </ol>
+</div>
+
+<div class="section page-break">
+  <h2>2. Tecnologías Utilizadas</h2>
+  <p>La plataforma está desarrollada con un enfoque robusto y escalable:</p>
+  <div class="tech-grid">
+    <div class="card"><h4>🐘 PHP 8.x</h4>Lenguaje principal con arquitectura MVC (Modelo-Vista-Controlador).</div>
+    <div class="card"><h4>🐬 MySQL 8.x</h4>Motor de base de datos relacional con integridad referencial.</div>
+    <div class="card"><h4>🌐 HTML5/CSS/JS</h4>Frontend interactivo y responsive con diseño "Boutique".</div>
+    <div class="card"><h4>📦 Composer</h4>Gestión de dependencias (FPDF, PHP Barcode Generator).</div>
+  </div>
+</div>
+
+<div class="section page-break">
+  <h2>3. Funcionalidades del Sistema</h2>
+  <img src="file:///C:/Users/victo/.gemini/antigravity/brain/f1a70f07-cc15-4215-a7fe-643bec6a4056/dashboard_mockup_1774371213820.png" style="width:100%; border-radius:10px; margin-bottom:20px; box-shadow:0 4px 15px rgba(0,0,0,0.1);">
+  
+  <div class="card" style="border-left-color: #2ecc71;">
+    <h4>💰 Módulo de Ventas (Punto de Venta)</h4>
+    <p>Interfaz rápida para creación de tickets: buscador de productos, carrito dinámico, impresión de comprobante, asignación de cliente y anulación de ventas.</p>
+  </div>
+
+  <div class="card" style="border-left-color: #f39c12;">
+    <h4>📦 Inventario y Productos Multi-Variante</h4>
+    <p>Gestión completa con atributos de Talla y Color (variantes). Control de stock mínimo, generación de códigos de barras universales (CODE128).</p>
+  </div>
+
+  <div class="card" style="border-left-color: #3498db;">
+    <h4>⚙️ Sucursales, Caja y Compras</h4>
+    <p>Soporte Multi-Sucursal para control independiente. Sesiones de caja diarias con registro de gastos. Compras a proveedores conectadas al stock.</p>
+  </div>
+
+  <div class="card" style="border-left-color: #9b59b6;">
+    <h4>📊 Reportes y Dashboard</h4>
+    <p>Reportes analíticos de ventas por fechas, Kardex de entradas/salidas de productos, métricas principales.</p>
+  </div>
+  
+  <img src="file:///C:/Users/victo/.gemini/antigravity/brain/f1a70f07-cc15-4215-a7fe-643bec6a4056/pos_mockup_1774371250332.png" style="width:100%; border-radius:10px; margin-top:20px; box-shadow:0 4px 15px rgba(0,0,0,0.1);">
+</div>
+
+<div class="section page-break">
+  <h2>4. Instalación (Equipo Nuevo) y Uso CMD</h2>
+  <h3>Requisitos</h3>
+  <ul>
+    <li>Laragon Full (Apache, MySQL 8+, PHP 8+)</li>
+    <li>Composer instalado</li>
+  </ul>
+  
+  <h3>Pasos desde CMD</h3>
+  <div class="code">
+    # 1. Instalar dependencias<br>
+    cd C:\\laragon\\www\\tienda_moda<br>
+    composer install<br><br>
+    # 2. Base de datos (MySQL)<br>
+    mysql -u root -p < bk_basededatos.sql<br><br>
+    # 3. Arrancar servidores<br>
+    cd C:\\laragon\\bin<br>
+    laragon.exe start<br>
+  </div>
+  <p>Acceso Web: <strong>http://localhost/tienda_moda</strong></p>
+</div>
+
+<div class="section page-break">
+  <h2>5. Credenciales de Acceso</h2>
+  <div class="cred-box">
+    <h3>Administrador Principal</h3>
+    <ul>
+      <li><strong>Correo:</strong> admin@tienda.com</li>
+      <li><strong>Contraseña:</strong> Xvito2013$</li>
+    </ul>
+    <p><em>* Cambiar en el primer inicio de sesión.</em></p>
+  </div>
+
+  <div class="cred-box" style="background:#1a2b3c; border-color:#3498db;">
+    <h3>Base de Datos Local</h3>
+    <ul>
+      <li><strong>Host:</strong> localhost (127.0.0.1)</li>
+      <li><strong>Database:</strong> sistema_moda</li>
+      <li><strong>Usuario:</strong> root</li>
+      <li><strong>Password:</strong> (vacío)</li>
+    </ul>
+  </div>
+</div>
+
+<div class="section">
+  <h2>6. Hosting Recomendado y Despliegue</h2>
+  <h3>Veredicto de Hosting</h3>
+  <p>Se recomienda <strong>Hostinger Premium</strong> por su velocidad optimizada para PHP/MySQL, certificados SSL gratuitos ilimitados, su panel en español (hPanel) altamente intuitivo, y los mejores precios del mercado de hosting compartido. Ideal para boutiques y PyMEs.</p>
+
+  <h3>Paso a Paso (Despliegue)</h3>
+  <ol>
+    <li>Comprime todo el proyecto (<code>C:\\laragon\\www\\tienda_moda</code>) en un archivo ZIP.</li>
+    <li>En Hostinger, crea una Base de Datos en la sección "Gestión de bases de datos".</li>
+    <li>Importa <code>bk_basededatos.sql</code> en phpMyAdmin.</li>
+    <li>En el "Administrador de archivos" de Hostinger, sube y extrae el ZIP dentro de <code>public_html</code>.</li>
+    <li>Abre <code>app/core/Database.php</code> y edita las credenciales con el nuevo usuario y password de la BD de Hostinger.</li>
+    <li>Edita <code>public/index.php</code> y deja la variable <code>$folder = '';</code></li>
+    <li>Activa el Certificado SSL y el sistema estará en línea.</li>
+  </ol>
+</div>
+
+</body>
+</html>"""
+
+html_path = "C:\\laragon\\www\\tienda_moda\\Manual_Tienda_Moda.html"
+pdf_path = "C:\\laragon\\www\\tienda_moda\\Manual_Tienda_Moda.pdf"
+
+with open(html_path, "w", encoding="utf-8") as f:
+    f.write(html_content)
+
+print("HTML generado exitosamente. Generando PDF...")
+
+edge_path = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+cmd = [
+    edge_path,
+    "--headless",
+    "--print-to-pdf=" + pdf_path,
+    "--no-pdf-header-footer",
+    "file:///" + html_path.replace("\\", "/")
+]
+
+try:
+    process = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
+    if os.path.exists(pdf_path):
+        print(f"PDF generado exitosamente en: {pdf_path}")
+    else:
+        print(f"Error: No se encontró el archivo PDF. Salida: {process.stdout} | {process.stderr}")
+except Exception as e:
+    print(f"Error al ejecutar Edge: {e}")
