@@ -36,13 +36,13 @@ spl_autoload_register(function ($nombre_clase) {
 License::checkEarly();
 
 // 5. SISTEMA DE RUTAS
-$url = isset($_GET['url']) ? $_GET['url'] : 'Auth/index';
+$url = isset($_GET['url']) ? $_GET['url'] : 'Tienda/index';
 $url = rtrim($url, '/');
 $url = explode('/', $url);
 
 // Controlador
-$controladorNombre = isset($url[0]) ? ucwords($url[0]) . 'Controller' : 'AuthController';
-$metodo = isset($url[1]) ? $url[1] : 'index';
+$controladorNombre = (!empty($url[0])) ? ucwords($url[0]) . 'Controller' : 'TiendaController';
+$metodo = (!empty($url[1])) ? $url[1] : 'index';
 $parametros = isset($url[2]) ? array_slice($url, 2) : [];
 
 // 6. EJECUTAR CONTROLADOR
@@ -55,5 +55,5 @@ if (file_exists('../app/controllers/' . $controladorNombre . '.php')) {
         echo "Error 404: El método no existe.";
     }
 } else {
-    header('Location: ' . BASE_URL . '/auth/index');
+    header('Location: ' . BASE_URL . '/tienda/index');
 }

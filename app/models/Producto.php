@@ -223,4 +223,68 @@ class Producto {
         }
         return false;
     }
+
+    // 11. OBTENER PRODUCTOS PARA LA TIENDA PÚBLICA
+    public function obtenerProductosTienda($categoria_id = null, $busqueda = null, $limite = null) {
+        $sql = "SELECT p.id, p.nombre, p.descripcion, p.codigo_barras_base, p.precio_venta, p.categoria_id, p.imagen,
+                c.nombre as categoria_nombre,
+                (SELECT IFNULL(SUM(inv.stock_actual), 0) 
+                 FROM inventario_sucursales inv 
+                 JOIN producto_variantes v ON inv.variante_id = v.id 
+                 WHERE v.producto_id = p.id) as stock_total
+                FROM productos p
+                LEFT JOIN categorias c ON p.categoria_id = c.id
+                WHERE p.activo = 1";
+        
+        $params = [];
+        if (!empty($categoria_id)) {
+            $sql .= " AND p.categoria_id = :cat";
+            $params[':cat'] = $categoria_id;
+        }
+        if (!empty($busqueda)) {
+            $sql .= " AND (p.nombre LIKE :q OR p.descripcion LIKE :q OR c.nombre LIKE :q)";
+            $params[':q'] = '%' . $busqueda . '%';
+        }
+
+        $sql .= " ORDER BY p.id DESC";
+
+        if (!empty($limite)) {
+            $sql .= " LIMIT " . intval($limite);
+        }
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute($params);
+        $productos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Adjuntar imágenes de galería y variantes a cada producto
+        foreach ($productos as &$p) {
+            $p['imagenes'] = $this->obtenerImagenes($p['id']);
+            $p['variantes'] = $this->obtenerVariantes($p['id'], 1);
+        }
+
+        return $productos;
+    }
+
+    // 12. DETALLE DE PRODUCTO CON VARIANTES E IMÁGENES PARA LA TIENDA
+    public function obtenerDetalleTienda($id) {
+        $sql = "SELECT p.id, p.nombre, p.descripcion, p.codigo_barras_base, p.precio_venta, p.categoria_id, p.imagen,
+                c.nombre as categoria_nombre,
+                (SELECT IFNULL(SUM(inv.stock_actual), 0) 
+                 FROM inventario_sucursales inv 
+                 JOIN producto_variantes v ON inv.variante_id = v.id 
+                 WHERE v.producto_id = p.id) as stock_total
+                FROM productos p
+                LEFT JOIN categorias c ON p.categoria_id = c.id
+                WHERE p.id = :id AND p.activo = 1";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([':id' => $id]);
+        $prod = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($prod) {
+            $prod['imagenes'] = $this->obtenerImagenes($prod['id']);
+            $prod['variantes'] = $this->obtenerVariantes($prod['id'], 1);
+        }
+
+        return $prod;
+    }
 }
