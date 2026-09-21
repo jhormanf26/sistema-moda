@@ -5,23 +5,37 @@ if (!class_exists('License'))  require_once '../app/core/License.php';
 
 $diasRestantes = null;
 $porcentaje    = 0;
-if ($licInfo && isset($licInfo['fecha_fin'])) {
-    $hoy  = new DateTime('today');
-    $fin  = new DateTime($licInfo['fecha_fin']);
-    $ini  = isset($licInfo['emision'])
-        ? (new DateTime())->setTimestamp((int)$licInfo['emision'])
-        : $hoy;
-    $diasRestantes = (int)$hoy->diff($fin)->format('%r%a');
-    $diasTotales   = max(1, (int)$ini->diff($fin)->days);
-    $porcentaje    = max(0, min(100, round(($diasRestantes / $diasTotales) * 100)));
+$esPerpetua    = false;
+
+if ($licInfo) {
+    if (isset($licInfo['fecha_fin']) && !empty($licInfo['fecha_fin'])) {
+        $hoy  = new DateTime('today');
+        $fin  = new DateTime($licInfo['fecha_fin']);
+        $ini  = isset($licInfo['emision']) && $licInfo['emision'] > 0
+            ? (new DateTime())->setTimestamp((int)$licInfo['emision'])
+            : $hoy;
+        
+        $diff = $hoy->diff($fin);
+        $diasRestantes = (int)$diff->format('%r%a');
+        $diasTotales   = max(1, (int)$ini->diff($fin)->days);
+        $porcentaje    = max(0, min(100, round(($diasRestantes / $diasTotales) * 100)));
+    } else {
+        $esPerpetua = true;
+        $porcentaje = 100;
+    }
 }
 
 if (!$licValida) {
     $barColor  = '#fca5a5';
-    $estadoTxt = 'EXPIRADA';
+    $estadoTxt = 'EXPIRADA O SUSPENDIDA';
     $badgeCls  = 'danger';
     $iconCls   = 'bi-shield-x-fill';
-} elseif ($diasRestantes !== null && $diasRestantes <= 15) {
+} elseif ($esPerpetua) {
+    $barColor  = '#38bdf8';
+    $estadoTxt = 'PERPETUA / ILIMITADA';
+    $badgeCls  = 'info';
+    $iconCls   = 'bi-shield-lock-fill';
+} elseif ($diasRestantes !== null && $diasRestantes <= 7) {
     $barColor  = '#fcd34d';
     $estadoTxt = 'POR VENCER';
     $badgeCls  = 'warning';
@@ -47,7 +61,6 @@ if (!$licValida) {
                 width: calc(100% - 260px);
             }
         }
-        /* ── tarjeta de estado ── */
         .lic-header-card {
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             color: #fff;
@@ -55,14 +68,6 @@ if (!$licValida) {
             padding: 1.75rem 2rem 1.5rem;
             position: relative;
             overflow: hidden;
-        }
-        .lic-header-card::after {
-            content: '';
-            position: absolute;
-            right: -30px; top: -30px;
-            width: 130px; height: 130px;
-            border-radius: 50%;
-            background: rgba(255,255,255,.04);
         }
         .lic-bar-track {
             height: 8px; border-radius: 999px;
@@ -86,7 +91,6 @@ if (!$licValida) {
         .info-box .val {
             font-size: 1rem; font-weight: 700; color: #212529;
         }
-        /* ── formulario de token ── */
         .token-card {
             border: 2px dashed #dee2e6;
             border-radius: 12px;
@@ -124,7 +128,12 @@ if (!$licValida) {
                     <h2 class="fw-bold mb-0">
                         <i class="bi bi-shield-lock-fill me-2 text-primary"></i>Mi Licencia
                     </h2>
-                    <p class="text-muted small mb-0">Estado y renovación de la licencia del Sistema de Moda</p>
+                    <p class="text-muted small mb-0">Estado, vigencia y revalidación de la licencia del sistema</p>
+                </div>
+                <div>
+                    <a href="<?= BASE_URL ?>/license/revalidar" class="btn btn-outline-primary btn-sm fw-bold">
+                        <i class="bi bi-arrow-repeat me-1"></i> Revalidar con Servidor
+                    </a>
                 </div>
             </div>
 
@@ -132,7 +141,7 @@ if (!$licValida) {
             <?php if ($success): ?>
             <div class="alert alert-success alert-dismissible fade show d-flex align-items-center gap-2 mb-4">
                 <i class="bi bi-check-circle-fill fs-5"></i>
-                <span><strong>¡Licencia aplicada!</strong> El sistema operará hasta la nueva fecha de vencimiento.</span>
+                <span><strong>¡Licencia actualizada!</strong> El sistema ha validado y guardado correctamente la nueva licencia.</span>
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
             <?php elseif ($error): ?>
@@ -169,16 +178,21 @@ if (!$licValida) {
                                             <span class="fs-5 fw-bold" style="color: <?= $barColor ?>;">Te quedan <?= max(0, $diasRestantes) ?> días</span>
                                         </div>
                                     </div>
+                                    <?php elseif ($esPerpetua): ?>
+                                    <div class="d-inline-flex align-items-center bg-dark bg-opacity-25 px-4 py-3 rounded-3 mt-2 border border-secondary border-opacity-25 shadow-sm">
+                                        <div>
+                                            <span class="text-white-50 small d-block mb-1" style="font-size: 0.75rem; letter-spacing: 1px;">TIPO DE VIGENCIA</span>
+                                            <span class="fs-5 fw-bold text-info"><i class="bi bi-infinity me-1"></i> Licencia Perpetua (Sin Vencimiento)</span>
+                                        </div>
+                                    </div>
                                     <?php endif; ?>
                                 </div>
                             </div>
 
-                            <?php if ($licInfo && isset($licInfo['fecha_fin'])): ?>
                             <div class="lic-bar-track mt-3">
                                 <div class="lic-bar-fill" id="licBar"
                                      style="width:0%;background:<?= $barColor ?>; box-shadow: 0 0 10px <?= $barColor ?>;"></div>
                             </div>
-                            <?php endif; ?>
                         </div>
 
                         <!-- Detalles -->
@@ -191,7 +205,7 @@ if (!$licValida) {
                                         <div class="val">
                                             <?= isset($licInfo['fecha_fin'])
                                                 ? date('d/m/Y', strtotime($licInfo['fecha_fin']))
-                                                : '—' ?>
+                                                : 'Perpetua' ?>
                                         </div>
                                     </div>
                                 </div>
@@ -199,31 +213,33 @@ if (!$licValida) {
                                     <div class="info-box">
                                         <div class="lbl"><i class="bi bi-hourglass-split me-1"></i>Días restantes</div>
                                         <div class="val" style="color:<?= $barColor ?>;">
-                                            <?= $diasRestantes !== null ? max(0, $diasRestantes) . ' días' : '—' ?>
+                                            <?= $diasRestantes !== null ? max(0, $diasRestantes) . ' días' : '∞' ?>
                                         </div>
                                     </div>
                                 </div>
-                                <?php if (!empty($licInfo['ruc'])): ?>
                                 <div class="col-6 col-md-4">
                                     <div class="info-box">
-                                        <div class="lbl"><i class="bi bi-building me-1"></i>RUC Registrado</div>
-                                        <div class="val"><?= htmlspecialchars($licInfo['ruc']) ?></div>
+                                        <div class="lbl"><i class="bi bi-award me-1"></i>Tipo de Licencia</div>
+                                        <div class="val text-primary"><?= htmlspecialchars($licInfo['tipo'] ?? 'N/A') ?></div>
                                     </div>
                                 </div>
-                                <?php endif; ?>
-                                <?php if (!empty($licInfo['id_empresa'])): ?>
                                 <div class="col-6 col-md-4">
                                     <div class="info-box">
-                                        <div class="lbl"><i class="bi bi-hash me-1"></i>ID de empresa</div>
-                                        <div class="val"><?= htmlspecialchars($licInfo['id_empresa']) ?></div>
+                                        <div class="lbl"><i class="bi bi-building me-1"></i>RUC / NIT</div>
+                                        <div class="val"><?= htmlspecialchars($licInfo['ruc'] ?? 'N/A') ?></div>
                                     </div>
                                 </div>
-                                <?php endif; ?>
+                                <div class="col-6 col-md-4">
+                                    <div class="info-box">
+                                        <div class="lbl"><i class="bi bi-person-badge me-1"></i>Cliente / ID</div>
+                                        <div class="val"><?= htmlspecialchars($licInfo['empresa_id'] ?? 'N/A') ?></div>
+                                    </div>
+                                </div>
                                 <?php if (!empty($licInfo['emision'])): ?>
                                 <div class="col-6 col-md-4">
                                     <div class="info-box">
                                         <div class="lbl"><i class="bi bi-calendar-plus me-1"></i>Fecha de emisión</div>
-                                        <div class="val"><?= date('d/m/Y', $licInfo['emision']) ?></div>
+                                        <div class="val"><?= date('d/m/Y', (int)$licInfo['emision']) ?></div>
                                     </div>
                                 </div>
                                 <?php endif; ?>
@@ -245,11 +261,10 @@ if (!$licValida) {
                         <div class="card-body p-4 d-flex flex-column">
                             <h5 class="fw-bold mb-1">
                                 <i class="bi bi-key-fill me-2 text-primary"></i>
-                                <?= $licValida ? 'Renovar / Cargar futura licencia' : 'Activar licencia' ?>
+                                <?= $licValida ? 'Renovar / Cargar Licencia JWT' : 'Activar licencia' ?>
                             </h5>
                             <p class="text-muted small mb-3">
-                                Pegue aquí el token que le provea su proveedor.
-                                <strong>La licencia</strong> se aplicará de inmediato y de forma offline.
+                                Pegue aquí el token JWT proporcionado por su proveedor. Se verificará de forma local y remota.
                             </p>
 
                             <form action="<?= BASE_URL ?>/license/activar" method="POST"
@@ -257,11 +272,11 @@ if (!$licValida) {
                                 <input type="hidden" name="from" value="panel">
                                 <div class="mb-3 flex-grow-1 d-flex flex-column">
                                     <label for="token_input" class="form-label fw-semibold small">
-                                        Token RSA (Base64)
+                                        Token JWT
                                     </label>
                                     <textarea name="token" id="token_input"
                                         class="form-control flex-grow-1" rows="7"
-                                        placeholder="Pegue aquí su token de licencia…&#10;&#10;Ejemplo:&#10;eyJydWMiOiJSVUMxMjM0NSJ9.abc123..."
+                                        placeholder="Pegue su token de licencia JWT aquí…&#10;&#10;Ejemplo:&#10;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
                                         required></textarea>
                                 </div>
                                 <button type="submit" class="btn btn-primary btn-lg w-100 shadow-sm">
@@ -273,7 +288,7 @@ if (!$licValida) {
                             <div class="alert alert-info d-flex gap-2 align-items-start mt-3 mb-0 py-2 px-3"
                                  style="font-size:.82rem;">
                                 <i class="bi bi-info-circle-fill mt-1" style="flex-shrink:0;"></i>
-                                <span>Las licencias operan <strong>100% offline</strong>. Su token contiene la firma RSA del proveedor y se verifica localmente sin conexión.</span>
+                                <span>Operación <strong>Dual (Offline/Online)</strong>. Se valida localmente sin internet y revalida de fondo con el servidor central.</span>
                             </div>
                         </div>
                     </div>
@@ -285,7 +300,6 @@ if (!$licValida) {
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Animar barra de progreso al cargar
         window.addEventListener('load', function () {
             var bar = document.getElementById('licBar');
             if (bar) {
