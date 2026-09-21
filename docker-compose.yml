@@ -17,7 +17,7 @@ services:
       LICENCIA_INTERVALO_MS: 3600000
       JWT_SECRET_LICENCIA: Kj$8LmpP@qZ1xV#9RtW&3Nf*cYuTbE^2oSvA!
     ports:
-      - "8080:80"
+      - "${APP_PORT:-8080}:80"
     volumes:
       - uploads_data:/var/www/html/public/img/productos
     depends_on:
