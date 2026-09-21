@@ -1,0 +1,8 @@
+.git
+.gitignore
+.env
+temp_*
+*.pdf
+build_pdf.py
+Dockerfile
+docker-compose.yml

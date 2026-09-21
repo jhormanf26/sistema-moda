@@ -81,11 +81,22 @@
                             <?php foreach($productos as $p): ?>
                             <tr class="<?= $p['activo'] == 0 ? 'table-secondary text-muted' : '' ?>">
                                 <td class="ps-4">
-                                    <div class="fw-bold"><?= $p['nombre'] ?></div>
-                                    <small class="text-muted">ID: <?= str_pad($p['id'], 4, '0', STR_PAD_LEFT) ?></small>
+                                    <div class="d-flex align-items-center">
+                                        <?php if(!empty($p['imagen'])): ?>
+                                            <img src="<?= BASE_URL ?>/<?= htmlspecialchars($p['imagen']) ?>" alt="<?= htmlspecialchars($p['nombre']) ?>" class="me-3 rounded shadow-sm border bg-white" style="width: 45px; height: 45px; object-fit: cover;">
+                                        <?php else: ?>
+                                            <div class="bg-white text-primary me-3 rounded border d-flex align-items-center justify-content-center shadow-sm" style="width: 45px; height: 45px; font-size: 1.2rem;">
+                                                <i class="bi bi-box-seam"></i>
+                                            </div>
+                                        <?php endif; ?>
+                                        <div>
+                                            <div class="fw-bold"><?= htmlspecialchars($p['nombre']) ?></div>
+                                            <small class="text-muted">ID: <?= str_pad($p['id'], 4, '0', STR_PAD_LEFT) ?></small>
+                                        </div>
+                                    </div>
                                 </td>
                                 <td><span class="badge bg-light text-dark border"><?= $p['categoria_nombre'] ?? 'General' ?></span></td>
-                                <td class="fw-bold text-primary"><?= htmlspecialchars($monedaEmpresa ?? 'S/') ?> <?= number_format($p['precio_venta'], 2) ?></td>
+                                <td class="fw-bold text-primary"><?= htmlspecialchars($monedaEmpresa ?? '$') ?> <?= formatearCOP($p['precio_venta']) ?></td>
                                 <td>
                                     <?php if($p['stock_total'] < 5): ?>
                                         <span class="badge bg-danger rounded-pill"><?= $p['stock_total'] ?> u.</span>

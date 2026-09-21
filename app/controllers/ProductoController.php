@@ -38,25 +38,69 @@ class ProductoController {
             $productoModel = new Producto();
             
             $datos = [
-                'nombre' => $_POST['nombre'], 'codigo' => $_POST['codigo'] ?? '', 'categoria' => $_POST['categoria'],
-                'precio_compra' => $_POST['precio_compra'] ?? 0, 'precio_venta' => $_POST['precio_venta'], 'descripcion' => $_POST['descripcion'] ?? ''
+                'nombre' => $_POST['nombre'], 
+                'codigo' => $_POST['codigo'] ?? '', 
+                'categoria' => $_POST['categoria'],
+                'precio_compra' => $_POST['precio_compra'] ?? 0, 
+                'precio_venta' => $_POST['precio_venta'], 
+                'descripcion' => $_POST['descripcion'] ?? ''
             ];
 
             $variantes = [];
-            if(isset($_POST['talla'])) {
-                for($i = 0; $i < count($_POST['talla']); $i++) {
-                    if(!empty($_POST['talla'][$i]) && !empty($_POST['color'][$i])) {
-                        $variantes[] = [
-                            'talla' => $_POST['talla'][$i], 'color' => $_POST['color'][$i],
-                            'stock' => $_POST['stock'][$i], 'codigo' => $_POST['codigo_var'][$i] ?? ''
-                        ];
-                    }
+            if (isset($_POST['stock'])) {
+                for ($i = 0; $i < count($_POST['stock']); $i++) {
+                    $talla = !empty(trim($_POST['talla'][$i] ?? '')) ? trim($_POST['talla'][$i]) : 'Única';
+                    $color = !empty(trim($_POST['color'][$i] ?? '')) ? trim($_POST['color'][$i]) : 'Estándar';
+                    $stock = isset($_POST['stock'][$i]) ? intval($_POST['stock'][$i]) : 0;
+                    $codigo = trim($_POST['codigo_var'][$i] ?? '');
+
+                    $variantes[] = [
+                        'talla' => $talla,
+                        'color' => $color,
+                        'stock' => $stock,
+                        'codigo' => $codigo
+                    ];
                 }
+            }
+
+            // Si por alguna razón la lista de variantes quedó vacía, aseguramos al menos una variante base
+            if (empty($variantes)) {
+                $variantes[] = [
+                    'talla' => 'Única',
+                    'color' => 'Estándar',
+                    'stock' => 0,
+                    'codigo' => $_POST['codigo'] ?? ''
+                ];
             }
 
             try {
                 $sucursal_id = $_SESSION['sucursal_id'] ?? 1;
-                $productoModel->registrar($datos, $variantes, $sucursal_id);
+                $producto_id = $productoModel->registrar($datos, $variantes, $sucursal_id);
+
+                // Manejo de múltiples imágenes subidas al crear
+                if ($producto_id && isset($_FILES['imagenes'])) {
+                    $permitidos = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
+                    $dest_dir = '../public/img/productos/';
+                    if (!file_exists($dest_dir)) { @mkdir($dest_dir, 0777, true); }
+
+                    $files = $_FILES['imagenes'];
+                    $count = is_array($files['name']) ? count($files['name']) : 0;
+                    $primera = true;
+
+                    for ($k = 0; $k < $count; $k++) {
+                        if ($files['error'][$k] == 0 && in_array(strtolower($files['type'][$k]), $permitidos)) {
+                            $ext = pathinfo($files['name'][$k], PATHINFO_EXTENSION);
+                            $nombre_img = 'prod_' . $producto_id . '_' . time() . '_' . rand(100, 999) . '.' . $ext;
+                            if (move_uploaded_file($files['tmp_name'][$k], $dest_dir . $nombre_img)) {
+                                $ruta_rel = 'img/productos/' . $nombre_img;
+                                $es_p = $primera ? 1 : 0;
+                                $productoModel->agregarImagen($producto_id, $ruta_rel, $es_p);
+                                $primera = false;
+                            }
+                        }
+                    }
+                }
+
                 header('Location: ' . BASE_URL . '/producto/index?msg=success');
             } catch (Exception $e) {
                 echo "Error: " . $e->getMessage();
@@ -85,6 +129,7 @@ class ProductoController {
         
         $sucursal_id = $_SESSION['sucursal_id'] ?? 1;
         $variantes = $productoModel->obtenerVariantes($id, $sucursal_id);
+        $imagenes = $productoModel->obtenerImagenes($id);
 
         require_once '../app/models/Categoria.php';
         $categoriaModel = new Categoria();
@@ -115,15 +160,61 @@ class ProductoController {
 
             $productoModel = new Producto();
             $sucursal_id = $_SESSION['sucursal_id'] ?? 1;
+
             if ($productoModel->actualizar($id, $datos, $variantes_update, $sucursal_id)) {
-                header('Location: ' . BASE_URL . '/producto/index?msg=updated');
+                // Procesar nuevas imágenes agregadas al actualizar
+                if (isset($_FILES['imagenes'])) {
+                    $permitidos = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
+                    $dest_dir = '../public/img/productos/';
+                    if (!file_exists($dest_dir)) { @mkdir($dest_dir, 0777, true); }
+
+                    $files = $_FILES['imagenes'];
+                    $count = is_array($files['name']) ? count($files['name']) : 0;
+
+                    $imgsActuales = $productoModel->obtenerImagenes($id);
+                    $tienePrincipal = false;
+                    foreach ($imgsActuales as $im) {
+                        if ($im['es_principal'] == 1) { $tienePrincipal = true; break; }
+                    }
+
+                    for ($k = 0; $k < $count; $k++) {
+                        if ($files['error'][$k] == 0 && in_array(strtolower($files['type'][$k]), $permitidos)) {
+                            $ext = pathinfo($files['name'][$k], PATHINFO_EXTENSION);
+                            $nombre_img = 'prod_' . $id . '_' . time() . '_' . rand(100, 999) . '.' . $ext;
+                            if (move_uploaded_file($files['tmp_name'][$k], $dest_dir . $nombre_img)) {
+                                $ruta_rel = 'img/productos/' . $nombre_img;
+                                $es_p = !$tienePrincipal ? 1 : 0;
+                                $productoModel->agregarImagen($id, $ruta_rel, $es_p);
+                                $tienePrincipal = true;
+                            }
+                        }
+                    }
+                }
+
+                header('Location: ' . BASE_URL . '/producto/editar/' . $id . '?msg=updated');
             } else {
                 echo "Error al actualizar.";
             }
         }
     }
 
-    // 7. CAMBIAR ESTADO (Solo Admin)
+    // 7. MARCAR IMAGEN COMO PRINCIPAL (Solo Admin)
+    public function marcarPrincipal($imagen_id, $producto_id) {
+        if ($_SESSION['user_rol'] != 'admin') { header('Location: ' . BASE_URL . '/producto/index'); return; }
+        $productoModel = new Producto();
+        $productoModel->establecerPrincipal($producto_id, $imagen_id);
+        header('Location: ' . BASE_URL . '/producto/editar/' . $producto_id . '?msg=principal_set');
+    }
+
+    // 8. ELIMINAR IMAGEN DE LA GALERÍA (Solo Admin)
+    public function eliminarImagen($imagen_id, $producto_id) {
+        if ($_SESSION['user_rol'] != 'admin') { header('Location: ' . BASE_URL . '/producto/index'); return; }
+        $productoModel = new Producto();
+        $productoModel->eliminarImagen($imagen_id, $producto_id);
+        header('Location: ' . BASE_URL . '/producto/editar/' . $producto_id . '?msg=img_deleted');
+    }
+
+    // 9. CAMBIAR ESTADO (Solo Admin)
     public function cambiarEstado($id, $estadoActual) {
         if ($_SESSION['user_rol'] != 'admin') { header('Location: ' . BASE_URL . '/producto/index'); return; }
 
@@ -137,7 +228,7 @@ class ProductoController {
         }
     }
 
-    // 8. EXPORTAR A EXCEL (Solo Admin)
+    // 10. EXPORTAR A EXCEL (Solo Admin)
     public function exportar() {
         if ($_SESSION['user_rol'] != 'admin') { header('Location: ' . BASE_URL . '/producto/index'); return; }
 
@@ -170,9 +261,8 @@ class ProductoController {
         exit;
     }
 
-    // 9. API KARDEX (HISTORIAL DE MOVIMIENTOS)
+    // 11. API KARDEX (HISTORIAL DE MOVIMIENTOS)
     public function historial($id) {
-        // Obtenemos los datos del Kardex (Movimientos)
         require_once '../app/models/Kardex.php';
         $kardexModel = new Kardex();
         $sucursal_id = $_SESSION['sucursal_id'] ?? 1;

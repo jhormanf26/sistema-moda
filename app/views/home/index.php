@@ -56,7 +56,7 @@
                         </div>
                         <div class="kpi-data">
                             <h6 class="kpi-title">Ventas Hoy</h6>
-                            <h2 class="kpi-value"><?= htmlspecialchars($monedaEmpresa ?? 'S/') ?> <?= number_format($hoy['total'] ?? 0, 2) ?></h2>
+                            <h2 class="kpi-value"><?= htmlspecialchars($monedaEmpresa ?? '$') ?> <?= formatearCOP($hoy['total'] ?? 0) ?></h2>
                             <p class="mb-0 mt-1 small text-muted"><i class="bi bi-receipt"></i> <?= $hoy['transacciones'] ?? 0 ?> confirmados</p>
                         </div>
                     </div>
@@ -70,7 +70,7 @@
                         </div>
                         <div class="kpi-data">
                             <h6 class="kpi-title">Ingresos Mes</h6>
-                            <h2 class="kpi-value"><?= htmlspecialchars($monedaEmpresa ?? 'S/') ?> <?= number_format($mes['total'] ?? 0, 2) ?></h2>
+                            <h2 class="kpi-value"><?= htmlspecialchars($monedaEmpresa ?? '$') ?> <?= formatearCOP($mes['total'] ?? 0) ?></h2>
                             <p class="mb-0 mt-1 small text-muted"><i class="bi bi-cart"></i> <?= $mes['transacciones'] ?? 0 ?> tickets</p>
                         </div>
                     </div>

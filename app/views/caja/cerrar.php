@@ -54,21 +54,21 @@
                     
                     <div class="d-flex justify-content-between mb-1 border-bottom pb-1">
                         <span class="text-muted">Monto Apertura (Base):</span>
-                        <span class="fw-bold"><?= htmlspecialchars($monedaEmpresa ?? 'S/') ?> <?= number_format($caja['monto_apertura'], 2) ?></span>
+                        <span class="fw-bold"><?= htmlspecialchars($monedaEmpresa ?? '$') ?> <?= formatearCOP($caja['monto_apertura']) ?></span>
                     </div>
                     <div class="d-flex justify-content-between mb-1 border-bottom pb-1">
                         <span class="text-muted">Ventas Realizadas (+):</span>
-                        <span class="fw-bold text-success"><?= htmlspecialchars($monedaEmpresa ?? 'S/') ?> <?= number_format($ventas_sesion, 2) ?></span>
+                        <span class="fw-bold text-success"><?= htmlspecialchars($monedaEmpresa ?? '$') ?> <?= formatearCOP($ventas_sesion) ?></span>
                     </div>
                     <div class="d-flex justify-content-between mb-2 pb-2">
                         <span class="text-muted fw-bold small text-uppercase tracking-wide">Gastos / Salidas (-):</span>
-                        <span class="fw-bold text-danger"><?= htmlspecialchars($monedaEmpresa ?? 'S/') ?> <?= number_format($gastos_sesion, 2) ?></span>
+                        <span class="fw-bold text-danger"><?= htmlspecialchars($monedaEmpresa ?? '$') ?> <?= formatearCOP($gastos_sesion) ?></span>
                     </div>
                     
                     <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top" style="border-top-color: var(--border-color) !important;">
                         <span class="fw-bold text-dark text-uppercase tracking-wide">Total Esperado:</span>
                         <span class="fs-4 fw-bold" style="color: var(--primary);">
-                            <?= htmlspecialchars($monedaEmpresa ?? 'S/') ?> <?= number_format(($caja['monto_apertura'] + $ventas_sesion) - $gastos_sesion, 2) ?>
+                            <?= htmlspecialchars($monedaEmpresa ?? '$') ?> <?= formatearCOP(($caja['monto_apertura'] + $ventas_sesion) - $gastos_sesion) ?>
                         </span>
                     </div>
                 </div>
@@ -81,8 +81,8 @@
                     <div class="mb-4">
                         <label class="form-label fw-bold small text-muted text-uppercase tracking-wide">¿Cuánto dinero hay FÍSICAMENTE en el cajón?</label>
                         <div class="input-group input-group-lg shadow-sm">
-                            <span class="input-group-text bg-white border-end-0 text-muted fw-bold">💰 <?= htmlspecialchars($monedaEmpresa ?? 'S/') ?></span>
-                            <input type="number" step="0.01" name="monto_fisico" class="form-control border-start-0 fw-bold fs-3" style="color: var(--primary);" required placeholder="0.00">
+                            <span class="input-group-text bg-white border-end-0 text-muted fw-bold">💰 <?= htmlspecialchars($monedaEmpresa ?? '$') ?></span>
+                            <input type="number" step="1" name="monto_fisico" class="form-control border-start-0 fw-bold fs-3" style="color: var(--primary);" required placeholder="0">
                         </div>
                         <div class="form-text text-center mt-3 text-muted">Ingresa el monto real contado. El sistema calculará automáticamente si sobra o falta dinero.</div>
                     </div>

@@ -143,7 +143,12 @@
              resultados.innerHTML = '<div class="list-group-item text-muted">No encontrado.</div>';
         } else {
             resultadosBusqueda.forEach((p, index) => {
-                resultados.innerHTML += `<button class="list-group-item list-group-item-action" onclick="agregar(${index})"><div class="d-flex w-100 justify-content-between"><h6 class="mb-1 fw-bold text-primary">${p.nombre}</h6><small>Stock: ${p.stock_actual}</small></div><small class="text-muted">${p.talla} / ${p.color}</small></button>`;
+                let esPredeterminado = (
+                    (!p.talla || p.talla === 'Única' || p.talla === 'Unica' || p.talla === 'Estándar' || p.talla === 'Estandar' || p.talla === 'N/A') &&
+                    (!p.color || p.color === 'Estándar' || p.color === 'Estandar' || p.color === 'Único' || p.color === 'Unico' || p.color === 'N/A')
+                );
+                let varText = esPredeterminado ? 'General' : `${p.talla} / ${p.color}`;
+                resultados.innerHTML += `<button class="list-group-item list-group-item-action" onclick="agregar(${index})"><div class="d-flex w-100 justify-content-between"><h6 class="mb-1 fw-bold text-primary">${p.nombre}</h6><small>Stock: ${p.stock_actual}</small></div><small class="text-muted">${varText}</small></button>`;
             });
         }
         resultados.style.display = 'block';
@@ -169,12 +174,20 @@
         let total = 0;
         if(carrito.length > 0) emptyCart.style.display = 'none'; else emptyCart.style.display = 'block';
 
+        const moneda = typeof G_MONEDA !== 'undefined' ? G_MONEDA : 'S/';
+
         carrito.forEach((item, index) => {
             let subtotal = item.cantidad * item.costo;
             total += subtotal;
-            carritoBody.innerHTML += `<tr><td><div class="fw-bold text-truncate" style="max-width: 200px;">${item.nombre}</div><small>${item.talla} / ${item.color}</small></td><td><input type="number" class="form-control form-control-sm text-center" value="${item.cantidad}" min="1" onchange="upd(${index}, 'cantidad', this.value)"></td><td><div class="input-group input-group-sm"><span class="input-group-text">${G_MONEDA}</span><input type="number" class="form-control fw-bold" value="${item.costo}" min="0" step="0.01" onchange="upd(${index}, 'costo', this.value)"></div></td><td class="text-end fw-bold">${G_MONEDA} ${subtotal.toFixed(2)}</td><td class="text-end"><button class="btn btn-sm btn-outline-danger border-0" onclick="del(${index})"><i class="bi bi-trash"></i></button></td></tr>`;
+            let esPredeterminado = (
+                (!item.talla || item.talla === 'Única' || item.talla === 'Unica' || item.talla === 'Estándar' || item.talla === 'Estandar' || item.talla === 'N/A') &&
+                (!item.color || item.color === 'Estándar' || item.color === 'Estandar' || item.color === 'Único' || item.color === 'Unico' || item.color === 'N/A')
+            );
+            let varText = esPredeterminado ? 'General' : `${item.talla} / ${item.color}`;
+
+            carritoBody.innerHTML += `<tr><td><div class="fw-bold text-truncate" style="max-width: 200px;">${item.nombre}</div><small class="text-muted">${varText}</small></td><td><input type="number" class="form-control form-control-sm text-center" value="${item.cantidad}" min="1" onchange="upd(${index}, 'cantidad', this.value)"></td><td><div class="input-group input-group-sm"><span class="input-group-text">${moneda}</span><input type="number" class="form-control fw-bold" value="${item.costo}" min="0" step="1" onchange="upd(${index}, 'costo', this.value)"></div></td><td class="text-end fw-bold">${moneda} ${formatCOP(subtotal)}</td><td class="text-end"><button class="btn btn-sm btn-outline-danger border-0" onclick="del(${index})"><i class="bi bi-trash"></i></button></td></tr>`;
         });
-        totalSpan.innerText = total.toFixed(2);
+        totalSpan.innerText = formatCOP(total);
     }
 
     window.upd = (idx, camp, val) => { 

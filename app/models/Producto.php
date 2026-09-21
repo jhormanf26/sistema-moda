@@ -10,10 +10,9 @@ class Producto {
         $this->conn = $database->getConnection();
     }
 
-    // 1. LISTAR (CORREGIDO: Ahora incluye precio_compra)
-    // 1. LISTAR (CORREGIDO: Ahora incluye precio_compra)
+    // 1. LISTAR (CORREGIDO: Ahora incluye precio_compra e imagen)
     public function listar($sucursal_id) {
-        $sql = "SELECT p.id, p.nombre, p.precio_compra, p.precio_venta, p.categoria_id, p.activo,
+        $sql = "SELECT p.id, p.nombre, p.precio_compra, p.precio_venta, p.categoria_id, p.activo, p.imagen,
                 c.nombre as categoria_nombre, 
                 (SELECT IFNULL(SUM(inv.stock_actual), 0) FROM inventario_sucursales inv 
                  JOIN producto_variantes v ON inv.variante_id = v.id 
@@ -27,13 +26,12 @@ class Producto {
     }
 
     // 2. REGISTRAR (Producto + Variantes)
-    // 2. REGISTRAR (Producto + Variantes)
     public function registrar($datos, $variantes, $sucursal_activa_id) {
         try {
             $this->conn->beginTransaction();
 
-            $sql = "INSERT INTO productos (nombre, codigo_barras_base, categoria_id, precio_compra, precio_venta, descripcion, activo) 
-                    VALUES (:nom, :cod, :cat, :p_compra, :p_venta, :desc, 1)";
+            $sql = "INSERT INTO productos (nombre, codigo_barras_base, categoria_id, precio_compra, precio_venta, descripcion, imagen, activo) 
+                    VALUES (:nom, :cod, :cat, :p_compra, :p_venta, :desc, :img, 1)";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute([
                 ':nom' => $datos['nombre'],
@@ -41,7 +39,8 @@ class Producto {
                 ':cat' => $datos['categoria'],
                 ':p_compra' => !empty($datos['precio_compra']) ? $datos['precio_compra'] : 0,
                 ':p_venta' => $datos['precio_venta'],
-                ':desc' => $datos['descripcion']
+                ':desc' => $datos['descripcion'],
+                ':img' => !empty($datos['imagen']) ? $datos['imagen'] : null
             ]);
             
             $producto_id = $this->conn->lastInsertId();
@@ -79,14 +78,13 @@ class Producto {
             }
 
             $this->conn->commit();
-            return true;
+            return $producto_id;
         } catch (Exception $e) {
             $this->conn->rollBack();
             throw new Exception($e->getMessage());
         }
     }
 
-    // 3. OBTENER VARIANTES
     // 3. OBTENER VARIANTES
     public function obtenerVariantes($id_producto, $sucursal_id) {
         $sql = "SELECT v.id, v.talla, v.color, v.codigo_barras_variante, IFNULL(inv.stock_actual, 0) as stock_actual 
@@ -113,14 +111,20 @@ class Producto {
 
             $sql = "UPDATE productos SET 
                     nombre = :nombre, codigo_barras_base = :cod, categoria_id = :cat, 
-                    precio_compra = :pcompra, precio_venta = :pventa, descripcion = :desc 
-                    WHERE id = :id";
+                    precio_compra = :pcompra, precio_venta = :pventa, descripcion = :desc" . 
+                    (!empty($datos['imagen']) ? ", imagen = :img " : " ") . 
+                    "WHERE id = :id";
             $stmt = $this->conn->prepare($sql);
-            $stmt->execute([
+            
+            $params = [
                 ':nombre' => $datos['nombre'], ':cod' => $datos['codigo'], ':cat' => $datos['categoria'],
                 ':pcompra' => $datos['precio_compra'], ':pventa' => $datos['precio_venta'],
                 ':desc' => $datos['descripcion'], ':id' => $id
-            ]);
+            ];
+            if (!empty($datos['imagen'])) {
+                $params[':img'] = $datos['imagen'];
+            }
+            $stmt->execute($params);
 
             if (!empty($variantes_update)) {
                 $sqlVar = "UPDATE producto_variantes SET codigo_barras_variante = :cod 
@@ -155,5 +159,68 @@ class Producto {
         $sql = "UPDATE productos SET activo = :estado WHERE id = :id";
         $stmt = $this->conn->prepare($sql);
         return $stmt->execute([':estado' => $nuevo_estado, ':id' => $id]);
+    }
+
+    // 7. OBTENER IMÁGENES DEL PRODUCTO
+    public function obtenerImagenes($producto_id) {
+        $sql = "SELECT * FROM producto_imagenes WHERE producto_id = :pid ORDER BY es_principal DESC, id ASC";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([':pid' => $producto_id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // 8. AGREGAR IMAGEN A LA GALERÍA
+    public function agregarImagen($producto_id, $ruta, $es_principal = 0) {
+        if ($es_principal == 1) {
+            $this->conn->prepare("UPDATE producto_imagenes SET es_principal = 0 WHERE producto_id = :pid")->execute([':pid' => $producto_id]);
+            $this->conn->prepare("UPDATE productos SET imagen = :img WHERE id = :pid")->execute([':img' => $ruta, ':pid' => $producto_id]);
+        }
+        $sql = "INSERT INTO producto_imagenes (producto_id, ruta_imagen, es_principal) VALUES (:pid, :ruta, :p)";
+        $stmt = $this->conn->prepare($sql);
+        return $stmt->execute([':pid' => $producto_id, ':ruta' => $ruta, ':p' => $es_principal]);
+    }
+
+    // 9. ESTABLECER IMAGEN COMO PRINCIPAL
+    public function establecerPrincipal($producto_id, $imagen_id) {
+        $stmt = $this->conn->prepare("SELECT ruta_imagen FROM producto_imagenes WHERE id = :id AND producto_id = :pid");
+        $stmt->execute([':id' => $imagen_id, ':pid' => $producto_id]);
+        $img = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($img) {
+            $this->conn->prepare("UPDATE producto_imagenes SET es_principal = 0 WHERE producto_id = :pid")->execute([':pid' => $producto_id]);
+            $this->conn->prepare("UPDATE producto_imagenes SET es_principal = 1 WHERE id = :id")->execute([':id' => $imagen_id]);
+            $this->conn->prepare("UPDATE productos SET imagen = :ruta WHERE id = :pid")->execute([':ruta' => $img['ruta_imagen'], ':pid' => $producto_id]);
+            return true;
+        }
+        return false;
+    }
+
+    // 10. ELIMINAR IMAGEN DE LA GALERÍA
+    public function eliminarImagen($imagen_id, $producto_id) {
+        $stmt = $this->conn->prepare("SELECT * FROM producto_imagenes WHERE id = :id AND producto_id = :pid");
+        $stmt->execute([':id' => $imagen_id, ':pid' => $producto_id]);
+        $img = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($img) {
+            $ruta_fisica = '../public/' . $img['ruta_imagen'];
+            if (file_exists($ruta_fisica)) {
+                @unlink($ruta_fisica);
+            }
+            $this->conn->prepare("DELETE FROM producto_imagenes WHERE id = :id")->execute([':id' => $imagen_id]);
+
+            if ($img['es_principal'] == 1) {
+                $stmtNext = $this->conn->prepare("SELECT * FROM producto_imagenes WHERE producto_id = :pid ORDER BY id ASC LIMIT 1");
+                $stmtNext->execute([':pid' => $producto_id]);
+                $nextImg = $stmtNext->fetch(PDO::FETCH_ASSOC);
+
+                if ($nextImg) {
+                    $this->establecerPrincipal($producto_id, $nextImg['id']);
+                } else {
+                    $this->conn->prepare("UPDATE productos SET imagen = NULL WHERE id = :pid")->execute([':pid' => $producto_id]);
+                }
+            }
+            return true;
+        }
+        return false;
     }
 }

@@ -1,10 +1,19 @@
 <?php
 // public/index.php
 
+// Helper global de formato para Pesos Colombianos (COP)
+if (!function_exists('formatearCOP')) {
+    function formatearCOP($monto) {
+        if ($monto === null || $monto === '') return '0';
+        return number_format((float)$monto, 0, ',', '.');
+    }
+}
+
 // 1. CONFIGURACIÓN DE URL DINÁMICA
-$protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
+$protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https" : "http";
 $host = $_SERVER['HTTP_HOST'];
-$folder = ($host === 'localhost') ? '/tienda_moda' : '';
+$scriptDir = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME']));
+$folder = ($scriptDir === '/' || $scriptDir === '\\') ? '' : rtrim($scriptDir, '/');
 define('BASE_URL', $protocol . '://' . $host . $folder);
 
 // 2. CARGA DE LIBRERÍAS DE COMPOSER (CRÍTICO: SOLUCIONA ERROR 'CLASS NOT FOUND')

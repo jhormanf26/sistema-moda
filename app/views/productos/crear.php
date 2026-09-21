@@ -47,20 +47,20 @@
             </div>
             
             <div class="card-body p-4">
-                <form action="<?= BASE_URL ?>/producto/guardar" method="POST">
+                <form action="<?= BASE_URL ?>/producto/guardar" method="POST" enctype="multipart/form-data">
                     
                     <h6 class="text-uppercase text-muted fw-bold mb-3" style="font-size: 0.8rem; letter-spacing: 1px;">Datos Básicos</h6>
                     
                     <div class="row mb-3 g-3">
-                        <div class="col-md-6">
+                        <div class="col-md-5">
                             <label class="form-label">Nombre del Producto <span class="text-danger">*</span></label>
-                            <input type="text" name="nombre" class="form-control" required placeholder="Ej: Polo Algodón Estampado">
+                            <input type="text" name="nombre" class="form-control" required placeholder="Ej: Crema Humectante / Polo Algodón">
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Código Base (Caja/Modelo)</label>
                             <input type="text" name="codigo" class="form-control" placeholder="Ej: MOD-001">
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <label class="form-label">Categoría</label>
                             <select name="categoria" class="form-select" required>
                                 <option value="" disabled selected>Seleccione...</option>
@@ -73,20 +73,36 @@
                         </div>
                     </div>
 
+                    <div class="row mb-3 g-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Imágenes del Producto <span class="text-muted fw-normal small">(Opcional)</span></label>
+                            <input type="file" name="imagenes[]" class="form-control" accept="image/jpeg, image/png, image/jpg, image/webp" multiple onchange="previewImagenes(this)">
+                            <div class="form-text">Puedes seleccionar una o múltiples imágenes (JPG, PNG, WEBP). La primera será la principal.</div>
+                        </div>
+                        <div class="col-md-6 d-flex align-items-center">
+                            <div id="boxPreview" class="d-none mt-2 w-100">
+                                <span class="text-muted small d-block mb-1">Vista previa de imágenes a subir:</span>
+                                <div id="galleryPreview" class="d-flex flex-wrap gap-2"></div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row mb-4 g-3">
                         <div class="col-md-3">
                             <label class="form-label text-muted">Precio Costo</label>
                             <div class="input-group">
-                                <span class="input-group-text bg-light border-end-0"><?= htmlspecialchars($monedaEmpresa ?? 'S/') ?></span>
-                                <input type="number" step="0.01" name="precio_compra" class="form-control border-start-0" placeholder="0.00">
+                                <span class="input-group-text bg-light border-end-0"><?= htmlspecialchars($monedaEmpresa ?? '$') ?></span>
+                                <input type="number" step="1" id="precio_compra" name="precio_compra" class="form-control border-start-0" placeholder="Ej: 15000" oninput="actualizarFormatoMoneda(this, 'preview_costo')">
                             </div>
+                            <small class="text-muted d-block mt-1" id="preview_costo"></small>
                         </div>
                         <div class="col-md-3">
                             <label class="form-label fw-bold text-success">Precio Venta <span class="text-danger">*</span></label>
                             <div class="input-group shadow-sm">
-                                <span class="input-group-text bg-success text-white border-success"><?= htmlspecialchars($monedaEmpresa ?? 'S/') ?></span>
-                                <input type="number" step="0.01" name="precio_venta" class="form-control fw-bold border-success" required placeholder="0.00">
+                                <span class="input-group-text bg-success text-white border-success"><?= htmlspecialchars($monedaEmpresa ?? '$') ?></span>
+                                <input type="number" step="1" id="precio_venta" name="precio_venta" class="form-control fw-bold border-success" required placeholder="Ej: 20000" oninput="actualizarFormatoMoneda(this, 'preview_venta')">
                             </div>
+                            <small class="text-success fw-bold d-block mt-1" id="preview_venta"></small>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Descripción</label>
@@ -96,30 +112,34 @@
 
                     <hr class="my-4">
 
-                    <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
                         <h6 class="text-uppercase text-muted fw-bold m-0" style="font-size: 0.8rem; letter-spacing: 1px;">
-                            Variantes (Inventario Inicial)
+                            Variantes / Presentación (Inventario Inicial)
                         </h6>
                         <button type="button" class="btn btn-sm btn-outline-success fw-bold" onclick="agregarVariante()">
-                            <i class="bi bi-plus-lg"></i> Agregar Talla/Color
+                            <i class="bi bi-plus-lg"></i> Agregar Variante / Presentación
                         </button>
                     </div>
+
+                    <p class="text-muted small mb-3">
+                        <i class="bi bi-info-circle me-1"></i> Para productos generales (cremas, cosméticos, aseo, etc.), puedes dejar Talla y Color en blanco o colocar detalles (ej. 200ml, Tono 01, etc.). Se asignará <strong>Única / Estándar</strong> automáticamente si no los especificas.
+                    </p>
 
                     <div class="table-responsive mb-4 rounded border">
                         <table class="table table-striped mb-0" id="tablaVariantes">
                             <thead class="table-light">
                                 <tr>
-                                    <th style="width: 20%;">Talla <span class="text-danger">*</span></th>
-                                    <th style="width: 25%;">Color <span class="text-danger">*</span></th>
+                                    <th style="width: 25%;">Talla / Presentación <span class="text-muted fw-normal small">(Opcional)</span></th>
+                                    <th style="width: 25%;">Color / Detalle <span class="text-muted fw-normal small">(Opcional)</span></th>
                                     <th style="width: 20%;">Stock Inicial <span class="text-danger">*</span></th>
-                                    <th style="width: 25%;">Cód. Barras (Opcional)</th>
+                                    <th style="width: 20%;">Cód. Barras (Opcional)</th>
                                     <th style="width: 10%;"></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><input type="text" name="talla[]" class="form-control form-control-sm" required placeholder="Ej: M"></td>
-                                    <td><input type="text" name="color[]" class="form-control form-control-sm" required placeholder="Ej: Negro"></td>
+                                    <td><input type="text" name="talla[]" class="form-control form-control-sm" placeholder="Ej: 200ml, Única, M"></td>
+                                    <td><input type="text" name="color[]" class="form-control form-control-sm" placeholder="Ej: Estándar, Rojo, N/A"></td>
                                     <td><input type="number" name="stock[]" class="form-control form-control-sm" required value="0" min="0"></td>
                                     <td><input type="text" name="codigo_var[]" class="form-control form-control-sm" placeholder="Auto"></td>
                                     <td class="text-center">
@@ -147,14 +167,70 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+    function previewImagenes(input) {
+        const box = document.getElementById('boxPreview');
+        const container = document.getElementById('galleryPreview');
+        container.innerHTML = '';
+
+        if (input.files && input.files.length > 0) {
+            box.classList.remove('d-none');
+            Array.from(input.files).forEach((file, index) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const div = document.createElement('div');
+                    div.className = 'position-relative';
+                    div.style.width = '70px';
+                    div.style.height = '70px';
+                    
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.width = '100%';
+                    img.style.height = '100%';
+                    img.style.objectFit = 'cover';
+                    img.style.borderRadius = '8px';
+                    img.style.border = '1px solid #ddd';
+                    img.style.padding = '2px';
+                    img.style.background = '#fff';
+
+                    if (index === 0) {
+                        const badge = document.createElement('span');
+                        badge.className = 'badge bg-warning text-dark position-absolute top-0 start-0 m-1 shadow-sm';
+                        badge.style.fontSize = '0.65rem';
+                        badge.innerText = '★';
+                        badge.title = 'Principal';
+                        div.appendChild(badge);
+                    }
+
+                    div.appendChild(img);
+                    container.appendChild(div);
+                };
+                reader.readAsDataURL(file);
+            });
+        } else {
+            box.classList.add('d-none');
+        }
+    }
+
+    function actualizarFormatoMoneda(input, elementId) {
+        const val = parseFloat(input.value);
+        const target = document.getElementById(elementId);
+        if (target) {
+            if (!isNaN(val) && val > 0) {
+                target.innerText = G_MONEDA + ' ' + formatCOP(val);
+            } else {
+                target.innerText = '';
+            }
+        }
+    }
+
     // Función para agregar filas dinámicas
     function agregarVariante() {
         const tableBody = document.querySelector('#tablaVariantes tbody');
         
         const newRow = `
             <tr>
-                <td><input type="text" name="talla[]" class="form-control form-control-sm" required placeholder="Talla"></td>
-                <td><input type="text" name="color[]" class="form-control form-control-sm" required placeholder="Color"></td>
+                <td><input type="text" name="talla[]" class="form-control form-control-sm" placeholder="Ej: 200ml, M"></td>
+                <td><input type="text" name="color[]" class="form-control form-control-sm" placeholder="Ej: Estándar, Rojo"></td>
                 <td><input type="number" name="stock[]" class="form-control form-control-sm" required value="0" min="0"></td>
                 <td><input type="text" name="codigo_var[]" class="form-control form-control-sm" placeholder="Auto"></td>
                 <td class="text-center">

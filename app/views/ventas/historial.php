@@ -124,8 +124,8 @@
                                     <tr class="<?= $v['estado'] == 'anulada' ? 'table-danger text-muted' : '' ?>">
                                         <td class="ps-4">#<?= str_pad($v['id'], 6, '0', STR_PAD_LEFT) ?></td>
                                         <td><?= $v['fecha'] ?></td>
-                                        <td class="fw-bold"><?= htmlspecialchars($monedaEmpresa ?? 'S/') ?>
-                                            <?= number_format($v['total'], 2) ?></td>
+                                        <td class="fw-bold"><?= htmlspecialchars($monedaEmpresa ?? '$') ?>
+                                            <?= formatearCOP($v['total']) ?></td>
                                         <td><?= $v['cliente_nombre'] ?? 'Público General' ?></td>
                                         <td><?= $v['vendedor'] ?></td>
                                         <td>

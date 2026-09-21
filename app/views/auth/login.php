@@ -2,8 +2,8 @@
 require_once dirname(__DIR__, 2) . '/core/Database.php';
 $db = new Database();
 $conn = $db->getConnection();
-$stmtEmpresa = $conn->query("SELECT * FROM empresa WHERE id = 1");
-$empresaGlobal = $stmtEmpresa->fetch(PDO::FETCH_ASSOC);
+$stmtEmpresa = $conn ? $conn->query("SELECT * FROM empresa WHERE id = 1") : false;
+$empresaGlobal = $stmtEmpresa ? $stmtEmpresa->fetch(PDO::FETCH_ASSOC) : null;
 $logoEmpresa = $empresaGlobal['logo'] ?? null;
 ?>
 <!DOCTYPE html>

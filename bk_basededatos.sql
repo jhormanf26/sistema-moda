@@ -240,6 +240,18 @@ INSERT INTO `productos` (`id`, `codigo_barras_base`, `nombre`, `descripcion`, `a
 	(1, 'CAM001', 'Camisa Oxford Manga Larga', 'Camisa Oxford', 1, 1, 45.00, 80.00, NULL, '2026-03-13 20:50:14'),
 	(2, 'PAN001', 'Pantalón Jean Slim Fit', 'Pantalón Jean', 1, 2, 60.00, 110.00, NULL, '2026-03-13 20:52:00');
 
+-- Volcando estructura para tabla sistema_moda.producto_imagenes
+CREATE TABLE IF NOT EXISTS `producto_imagenes` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `producto_id` int NOT NULL,
+  `ruta_imagen` varchar(255) NOT NULL,
+  `es_principal` tinyint(1) DEFAULT '0',
+  `fecha_creacion` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `producto_id` (`producto_id`),
+  CONSTRAINT `producto_imagenes_ibfk_1` FOREIGN KEY (`producto_id`) REFERENCES `productos` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 -- Volcando estructura para tabla sistema_moda.producto_variantes
 CREATE TABLE IF NOT EXISTS `producto_variantes` (
   `id` int NOT NULL AUTO_INCREMENT,

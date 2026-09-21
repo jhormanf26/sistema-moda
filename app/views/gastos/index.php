@@ -86,7 +86,7 @@
                     <div class="text-muted small text-uppercase fw-bold tracking-wide mb-1">
                         <?= isset($_GET['fecha_inicio']) ? 'Total Filtrado' : 'Total Gastos Hoy' ?>
                     </div>
-                    <h2 class="display-5 fw-bold mb-0" style="color: var(--primary);"><span class="fs-4 text-muted"><?= htmlspecialchars($monedaEmpresa ?? 'S/') ?></span> <?= number_format($totalHoy ?? 0, 2) ?></h2>
+                    <h2 class="display-5 fw-bold mb-0" style="color: var(--primary);"><span class="fs-4 text-muted"><?= htmlspecialchars($monedaEmpresa ?? '$') ?></span> <?= formatearCOP($totalHoy ?? 0) ?></h2>
                 </div>
             </div>
         </div>
@@ -125,7 +125,7 @@
                                 <tr>
                                     <td class="ps-4 text-muted">#<?= str_pad($g['id'], 5, '0', STR_PAD_LEFT) ?></td>
                                     <td><?= date('d/m/Y H:i', strtotime($g['fecha'])) ?></td>
-                                    <td class="fw-bold" style="color: var(--primary);">- <?= htmlspecialchars($monedaEmpresa ?? 'S/') ?> <?= number_format($g['monto'], 2) ?></td>
+                                    <td class="fw-bold" style="color: var(--primary);">- <?= htmlspecialchars($monedaEmpresa ?? '$') ?> <?= formatearCOP($g['monto']) ?></td>
                                     <td><?= htmlspecialchars($g['descripcion']) ?></td>
                                     <td><span class="badge bg-light text-dark border px-3 py-2 rounded-pill"><i class="bi bi-person me-1 text-muted"></i> <?= htmlspecialchars($g['usuario_nombre']) ?></span></td>
                                 </tr>
@@ -150,10 +150,10 @@
             <form action="<?= BASE_URL ?>/gasto/guardar" method="POST">
                 <div class="modal-body p-4">
                     <div class="mb-4">
-                        <label for="monto" class="form-label fw-bold small text-muted text-uppercase tracking-wide">Monto a Retirar (<?= htmlspecialchars($monedaEmpresa ?? 'S/') ?>)</label>
+                        <label for="monto" class="form-label fw-bold small text-muted text-uppercase tracking-wide">Monto a Retirar (<?= htmlspecialchars($monedaEmpresa ?? '$') ?>)</label>
                         <div class="input-group input-group-lg">
-                            <span class="input-group-text bg-white border-end-0 text-muted fw-bold"><?= htmlspecialchars($monedaEmpresa ?? 'S/') ?></span>
-                            <input type="number" step="0.01" min="0.01" class="form-control border-start-0 fw-bold fs-3" style="color: var(--primary);" id="monto" name="monto" required placeholder="0.00">
+                            <span class="input-group-text bg-white border-end-0 text-muted fw-bold"><?= htmlspecialchars($monedaEmpresa ?? '$') ?></span>
+                            <input type="number" step="1" min="1" class="form-control border-start-0 fw-bold fs-3" style="color: var(--primary);" id="monto" name="monto" required placeholder="0">
                         </div>
                     </div>
                     <div class="mb-3">

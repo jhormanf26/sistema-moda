@@ -309,23 +309,41 @@
                 grid.innerHTML = '<div class="col-12 text-center text-danger mt-5"><h5>🚫 Producto no encontrado</h5></div>';
                 return;
             }
+            const moneda = typeof G_MONEDA !== 'undefined' ? G_MONEDA : 'S/';
             productos.forEach(prod => {
                 let stockClass = prod.stock_actual < 5 ? 'bg-danger' : 'bg-success';
                 let stockText = prod.stock_actual < 1 ? 'AGOTADO' : `Stock: ${prod.stock_actual}`;
                 let disabled = prod.stock_actual < 1 ? 'opacity: 0.6; pointer-events: none;' : '';
 
+                let esPredeterminado = (
+                    (!prod.talla || prod.talla === 'Única' || prod.talla === 'Unica' || prod.talla === 'Estándar' || prod.talla === 'Estandar' || prod.talla === 'N/A') &&
+                    (!prod.color || prod.color === 'Estándar' || prod.color === 'Estandar' || prod.color === 'Único' || prod.color === 'Unico' || prod.color === 'N/A')
+                );
+
+                let badgeHtml = '';
+                if (!esPredeterminado) {
+                    badgeHtml = `
+                    <div class="mb-2">
+                        <span class="badge bg-light text-dark border">${prod.talla}</span>
+                        <span class="badge bg-light text-dark border">${prod.color}</span>
+                    </div>`;
+                }
+
+                let mediaHtml = (prod.imagen && prod.imagen.trim() !== '') 
+                    ? `<img src="${BASE_URL}/${prod.imagen}" alt="${prod.nombre}" class="img-fluid rounded mb-2" style="height: 85px; width: 100%; object-fit: contain;">`
+                    : `<div class="mb-2 fs-1 text-primary py-2"><i class="bi bi-tag-fill"></i></div>`;
+
                 let card = `
                 <div class="col-lg-3 col-md-4 col-6 mb-3" style="${disabled}">
                     <div class="card card-producto h-100" onclick='agregarAlCarrito(${JSON.stringify(prod)})'>
-                        <div class="card-body p-2 text-center position-relative">
-                            <span class="position-absolute top-0 end-0 badge ${stockClass} m-1" style="font-size:0.65rem;">${stockText}</span>
-                            <div class="mb-2 fs-1 text-primary"><i class="bi bi-tag-fill"></i></div> 
-                            <h6 class="card-title text-truncate fw-bold mb-1">${prod.nombre}</h6>
-                            <div class="mb-2">
-                                <span class="badge bg-light text-dark border">${prod.talla}</span>
-                                <span class="badge bg-light text-dark border">${prod.color}</span>
+                        <div class="card-body p-2 text-center position-relative d-flex flex-column justify-content-between">
+                            <span class="position-absolute top-0 end-0 badge ${stockClass} m-1" style="font-size:0.65rem; z-index:2;">${stockText}</span>
+                            <div>
+                                ${mediaHtml}
+                                <h6 class="card-title text-truncate fw-bold mb-1" title="${prod.nombre}">${prod.nombre}</h6>
+                                ${badgeHtml}
                             </div>
-                            <h5 class="text-primary fw-bold">${G_MONEDA} ${parseFloat(prod.precio_venta).toFixed(2)}</h5>
+                            <h5 class="text-primary fw-bold mb-0 mt-1">${moneda} ${formatCOP(prod.precio_venta)}</h5>
                         </div>
                     </div>
                 </div>`;
@@ -336,6 +354,14 @@
         // --- CARRITO ---
         window.agregarAlCarrito = function (producto) {
             const existe = carrito.find(item => item.variante_id === producto.variante_id);
+
+            let esPredeterminado = (
+                (!producto.talla || producto.talla === 'Única' || producto.talla === 'Unica' || producto.talla === 'Estándar' || producto.talla === 'Estandar' || producto.talla === 'N/A') &&
+                (!producto.color || producto.color === 'Estándar' || producto.color === 'Estandar' || producto.color === 'Único' || producto.color === 'Unico' || producto.color === 'N/A')
+            );
+
+            let desc = esPredeterminado ? 'General' : `${producto.talla}/${producto.color}`;
+
             if (existe) {
                 if (existe.cantidad + 1 > producto.stock_actual) {
                     Swal.fire('Stock Insuficiente', 'No hay más unidades.', 'warning'); return;
@@ -346,7 +372,7 @@
                 carrito.push({
                     variante_id: producto.variante_id,
                     nombre: producto.nombre,
-                    descripcion: `${producto.talla}/${producto.color}`,
+                    descripcion: desc,
                     precio: parseFloat(producto.precio_venta),
                     cantidad: 1,
                     max_stock: producto.stock_actual
@@ -367,11 +393,11 @@
                 <tr>
                     <td><div class="fw-bold small text-truncate" style="max-width:120px;">${item.nombre}</div><small class="text-muted" style="font-size:0.75em;">${item.descripcion}</small></td>
                     <td class="text-center"><input type="number" class="form-control form-control-sm text-center p-0" value="${item.cantidad}" min="1" max="${item.max_stock}" onchange="cambiarCantidad(${index}, this.value)"></td>
-                    <td class="text-end small fw-bold">${G_MONEDA} ${subtotal.toFixed(2)}</td>
+                    <td class="text-end small fw-bold">${G_MONEDA} ${formatCOP(subtotal)}</td>
                     <td class="text-center"><button class="btn btn-sm text-danger p-0" onclick="eliminarItem(${index})"><i class="bi bi-x"></i></button></td>
                 </tr>`;
             });
-            totalSpan.innerText = total.toFixed(2);
+            totalSpan.innerText = formatCOP(total);
         }
 
         window.cambiarCantidad = (index, val) => {
@@ -392,9 +418,9 @@
             
             totalVentaActual = carrito.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
             
-            document.getElementById('cobroTotalTexto').innerText = (typeof G_MONEDA !== 'undefined' ? G_MONEDA : 'S/') + ' ' + totalVentaActual.toFixed(2);
+            document.getElementById('cobroTotalTexto').innerText = (typeof G_MONEDA !== 'undefined' ? G_MONEDA : '$') + ' ' + formatCOP(totalVentaActual);
             document.getElementById('montoRecibido').value = '';
-            document.getElementById('vueltoTexto').innerText = '0.00';
+            document.getElementById('vueltoTexto').innerText = '0';
             document.getElementById('formaPagoCobro').value = 'efectivo';
             verificarFormaPago();
 
@@ -416,7 +442,7 @@
         window.calcularVuelto = () => {
             const monto = parseFloat(document.getElementById('montoRecibido').value) || 0;
             const vuelto = monto - totalVentaActual;
-            document.getElementById('vueltoTexto').innerText = vuelto >= 0 ? vuelto.toFixed(2) : '0.00';
+            document.getElementById('vueltoTexto').innerText = vuelto >= 0 ? formatCOP(vuelto) : '0';
         }
 
         window.confirmarVentaExterna = () => {

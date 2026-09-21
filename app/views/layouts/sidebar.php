@@ -10,7 +10,7 @@ $stmtEmpresa = $conn->query("SELECT * FROM empresa WHERE id = 1");
 $empresaGlobal = $stmtEmpresa->fetch(PDO::FETCH_ASSOC);
 $logoEmpresa = $empresaGlobal['logo'] ?? null;
 $nombreEmpresa = $empresaGlobal['nombre'] ?? 'Sistema Moda';
-$monedaEmpresa = $empresaGlobal['moneda'] ?? 'S/';
+$monedaEmpresa = $empresaGlobal['moneda'] ?? '$';
 ?>
 
 <div class="offcanvas offcanvas-start bg-dark text-white d-lg-none" tabindex="-1" id="sidebarMenu"
@@ -51,9 +51,15 @@ $monedaEmpresa = $empresaGlobal['moneda'] ?? 'S/';
     <?php include 'menu_items.php'; ?>
 </div>
 
-<!-- Variable global JS para la moneda -->
+<!-- Variable global JS para la moneda y helper de formato COP -->
 <script>
     const G_MONEDA = "<?= htmlspecialchars($monedaEmpresa) ?>";
+
+    function formatCOP(monto) {
+        if (monto === null || monto === undefined || monto === '') return '0';
+        let num = Math.round(parseFloat(monto) || 0);
+        return num.toLocaleString('de-DE');
+    }
 
     document.addEventListener("DOMContentLoaded", function() {
         // Encontrar el elemento activo en el menú (con clase .active, excluyendo los pill básicos si los hubiera, pero usualmente usan .active)

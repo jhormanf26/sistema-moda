@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sistema_moda_app
+    restart: always
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: sistema_moda
+      DB_USER: sistema_user
+      DB_PASS: sistema_secret
+    ports:
+      - "8080:80"
+    volumes:
+      - uploads_data:/var/www/html/public/img/productos
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    container_name: sistema_moda_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root_secret
+      MYSQL_DATABASE: sistema_moda
+      MYSQL_USER: sistema_user
+      MYSQL_PASSWORD: sistema_secret
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./bk_basededatos.sql:/docker-entrypoint-initdb.d/bk_basededatos.sql:ro
+    ports:
+      - "3306:3306"
+
+volumes:
+  mysql_data:
+  uploads_data:

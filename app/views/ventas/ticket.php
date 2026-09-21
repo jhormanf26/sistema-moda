@@ -114,14 +114,22 @@
         </thead>
         <tbody>
             <?php foreach ($detalles as $item): ?>
+                <?php 
+                $esPredeterminado = (
+                    (empty($item['talla']) || in_array($item['talla'], ['Única', 'Unica', 'Estándar', 'Estandar', 'N/A'])) &&
+                    (empty($item['color']) || in_array($item['color'], ['Estándar', 'Estandar', 'Único', 'Unico', 'N/A']))
+                );
+                ?>
                 <tr>
                     <td>
-                        <?= $item['nombre'] ?><br>
-                        <small>(<?= $item['talla'] ?> - <?= $item['color'] ?>)</small>
+                        <?= htmlspecialchars($item['nombre']) ?><br>
+                        <?php if (!$esPredeterminado): ?>
+                            <small>(<?= htmlspecialchars($item['talla']) ?> - <?= htmlspecialchars($item['color']) ?>)</small>
+                        <?php endif; ?>
                     </td>
                     <td class="text-center"><?= $item['cantidad'] ?></td>
-                    <td class="text-right"><?= htmlspecialchars($empresa['moneda'] ?? 'S/') ?>
-                        <?= number_format($item['subtotal'], 2) ?></td>
+                    <td class="text-right"><?= htmlspecialchars($empresa['moneda'] ?? '$') ?>
+                        <?= formatearCOP($item['subtotal']) ?></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
@@ -130,8 +138,8 @@
     <div class="line"></div>
 
     <div class="text-right">
-        <h2 style="margin: 10px 0;">TOTAL: <?= htmlspecialchars($empresa['moneda'] ?? 'S/') ?>
-            <?= number_format($venta['total'], 2) ?></h2>
+        <h2 style="margin: 10px 0;">TOTAL: <?= htmlspecialchars($empresa['moneda'] ?? '$') ?>
+            <?= formatearCOP($venta['total']) ?></h2>
     </div>
 
     <div class="text-center" style="margin-top: 20px;">
