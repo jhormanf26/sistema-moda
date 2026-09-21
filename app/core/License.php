@@ -80,24 +80,24 @@ EOD;
             
             $payloadJson = self::base64UrlDecode($parts[1]);
             if (!$payloadJson) {
-                return ['valid' => false, 'error' => 'LICENCIA INVÁLIDA O CORRUPTA'];
+                return ['valid' => false, 'error' => 'Payload Base64 del token JWT corrupto o no decodificable.'];
             }
 
             // Verificar firma HS256
             $signatureCheck = self::base64UrlEncode(hash_hmac('sha256', $parts[0] . '.' . $parts[1], $secret, true));
             if (!hash_equals($signatureCheck, $parts[2])) {
-                return ['valid' => false, 'error' => 'LICENCIA INVÁLIDA O CORRUPTA'];
+                return ['valid' => false, 'error' => 'Firma del token JWT inválida. La clave secreta JWT_SECRET_LICENCIA no coincide con la del emisor.'];
             }
 
             $data = json_decode($payloadJson, true);
             if (!$data) {
-                return ['valid' => false, 'error' => 'LICENCIA INVÁLIDA O CORRUPTA'];
+                return ['valid' => false, 'error' => 'El contenido Payload del token JWT no es un JSON válido.'];
             }
 
             // Comprobar Expiración (si exp está configurado)
             if (isset($data['exp']) && $data['exp'] > 0) {
                 if (time() > (int)$data['exp']) {
-                    return ['valid' => false, 'error' => 'SU LICENCIA HA EXPIRADO'];
+                    return ['valid' => false, 'error' => 'SU LICENCIA HA EXPIRADO el ' . date('d/m/Y H:i', (int)$data['exp']) . '.'];
                 }
             }
 
@@ -113,33 +113,33 @@ EOD;
             $signature   = self::base64UrlDecode($signatureB64);
 
             if (!$payloadJson || !$signature) {
-                return ['valid' => false, 'error' => 'LICENCIA INVÁLIDA O CORRUPTA'];
+                return ['valid' => false, 'error' => 'Payload o firma de licencia RSA corrupta.'];
             }
 
             $pubKey = @openssl_pkey_get_public(self::PUBLIC_KEY);
             if (!$pubKey) {
-                return ['valid' => false, 'error' => 'LICENCIA INVÁLIDA O CORRUPTA'];
+                return ['valid' => false, 'error' => 'No se pudo cargar la clave pública RSA de verificación.'];
             }
 
             $ok = @openssl_verify($payloadB64, $signature, $pubKey, OPENSSL_ALGO_SHA256);
             if ($ok !== 1) {
-                return ['valid' => false, 'error' => 'LICENCIA INVÁLIDA O CORRUPTA'];
+                return ['valid' => false, 'error' => 'Firma RSA de licencia inválida o manipulada.'];
             }
 
             $data = json_decode($payloadJson, true);
             if (!$data) {
-                return ['valid' => false, 'error' => 'LICENCIA INVÁLIDA O CORRUPTA'];
+                return ['valid' => false, 'error' => 'Payload JSON de licencia RSA no válido.'];
             }
 
             $fechaFin = isset($data['fecha_fin']) ? strtotime($data['fecha_fin']) : (isset($data['exp']) ? (int)$data['exp'] : null);
             if ($fechaFin && time() > $fechaFin) {
-                return ['valid' => false, 'error' => 'SU LICENCIA HA EXPIRADO'];
+                return ['valid' => false, 'error' => 'SU LICENCIA HA EXPIRADO el ' . date('d/m/Y', $fechaFin) . '.'];
             }
 
             return ['valid' => true, 'data' => $data, 'error' => null];
         }
 
-        return ['valid' => false, 'error' => 'LICENCIA INVÁLIDA O CORRUPTA'];
+        return ['valid' => false, 'error' => 'Formato de token no reconocido. Debe ser un token JWT (3 partes separadas por puntos).'];
     }
 
     /**
