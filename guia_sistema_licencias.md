@@ -38,6 +38,9 @@ PANEL_LICENCIAS_URL=http://localhost:4000
 
 # Frecuencia con la que el sistema consulta al panel remoto (1 hora = 3600000 ms)
 LICENCIA_INTERVALO_MS=3600000
+
+# (Opcional para Dokploy/Docker) Token de licencia persistente para evitar pedirlo en cada nuevo despliegue
+LICENCIA_TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```
 
 *Nota: Se recomienda parametrizar también la firma secreta de los tokens (p. ej., `JWT_SECRET_LICENCIA`) para evitar dejarla hardcodeada en el código fuente.*

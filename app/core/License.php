@@ -121,7 +121,8 @@ EOD;
                 return ['valid' => false, 'error' => 'Payload o firma de licencia RSA corrupta.'];
             }
 
-            $pubKey = @openssl_pkey_get_public(self::PUBLIC_KEY);
+            $cleanPubKeyStr = str_replace(["\r\n", "\r"], "\n", trim(self::PUBLIC_KEY));
+            $pubKey = @openssl_pkey_get_public($cleanPubKeyStr);
             if (!$pubKey) {
                 return ['valid' => false, 'error' => 'No se pudo cargar la clave pública RSA de verificación.'];
             }
@@ -251,6 +252,13 @@ EOD;
     }
 
     public static function getToken() {
+        // 1. Verificar si el token viene configurado como variable de entorno (Ideal para Dokploy / Docker)
+        $envToken = getenv('LICENCIA_TOKEN') ?: ($_ENV['LICENCIA_TOKEN'] ?? null);
+        if (!empty($envToken)) {
+            return trim($envToken);
+        }
+
+        // 2. Verificar archivo local config/licencia.json
         if (file_exists(self::$jsonFile)) {
             $content = @file_get_contents(self::$jsonFile);
             $json = @json_decode($content, true);
@@ -259,6 +267,7 @@ EOD;
             }
         }
 
+        // 3. Verificar archivo legacy config/license.key
         if (file_exists(self::$keyFile)) {
             $token = trim(@file_get_contents(self::$keyFile));
             if (!empty($token)) {
