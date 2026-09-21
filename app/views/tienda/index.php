@@ -52,21 +52,23 @@
         .glass-header { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px); }
     </style>
 </head>
-<body class="bg-[#f8f9ff] font-sans text-[#0d1c2f] antialiased min-h-screen flex flex-col justify-between selection:bg-[#F97316]/20 selection:text-[#F97316]">
+<body class="bg-[#f8f9ff] font-sans text-[#0d1c2f] antialiased min-h-screen flex flex-col justify-between selection:bg-[#F97316]/20 selection:text-[#F97316] max-w-full overflow-x-hidden">
 
 
 
     <!-- HEADER DE LA TIENDA -->
-    <header class="sticky top-0 z-40 w-full glass-header border-b border-slate-200/80 shadow-sm">
+    <header class="sticky top-0 z-40 w-full glass-header border-b border-slate-200/80 shadow-sm max-w-full overflow-hidden">
         
         <!-- Ticker de Anuncio y Contacto -->
-        <div class="bg-slate-900 text-white text-xs py-1.5 px-4 sm:px-8">
-            <div class="max-w-[1440px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
-                <div class="flex items-center gap-2">
-                    <span class="bg-[#F97316] text-white font-bold text-[10px] uppercase px-2 py-0.5 rounded">Aviso Tienda</span>
-                    <span class="truncate">¡Entregas rápidas y atención personalizada! Pedidos WhatsApp al <strong class="text-amber-400"><?= htmlspecialchars($empresa['telefono'] ?? '+52 55 1234 5678') ?></strong></span>
+        <div class="bg-slate-900 text-white text-[11px] sm:text-xs py-1.5 px-3 sm:px-8 overflow-hidden">
+            <div class="max-w-[1440px] mx-auto flex items-center justify-between gap-2 min-w-0">
+                <div class="flex items-center gap-1.5 min-w-0 truncate">
+                    <span class="bg-[#F97316] text-white font-bold text-[9px] uppercase px-1.5 py-0.5 rounded flex-shrink-0">Aviso</span>
+                    <span class="truncate text-slate-200">
+                        Pedidos WhatsApp: <strong class="text-amber-400"><?= htmlspecialchars($empresa['telefono'] ?? '+52 55 1234 5678') ?></strong>
+                    </span>
                 </div>
-                <div class="hidden md:flex items-center gap-4 text-slate-300">
+                <div class="hidden md:flex items-center gap-4 text-slate-300 flex-shrink-0">
                     <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Horario: Lun - Sáb (8:00 AM - 9:00 PM)</span>
                     <span>|</span>
                     <a href="#sucursales" class="hover:text-white transition-colors flex items-center gap-1">
@@ -78,31 +80,31 @@
         </div>
 
         <!-- Barra Principal de Navegación y Búsqueda -->
-        <div class="max-w-[1440px] mx-auto px-4 sm:px-8 py-3 flex items-center justify-between gap-4">
+        <div class="max-w-[1440px] mx-auto px-3 sm:px-8 py-2.5 flex items-center justify-between gap-2 min-w-0">
             <!-- Logo Marca -->
-            <a href="<?= BASE_URL ?>/tienda" class="flex items-center gap-3 group flex-shrink-0">
-                <?php if (!empty($empresa['logo']) && file_exists('../public/' . $empresa['logo'])): ?>
-                    <img src="<?= BASE_URL ?>/<?= htmlspecialchars($empresa['logo']) ?>" alt="Logo" class="h-10 w-auto object-contain">
+            <a href="<?= BASE_URL ?>/tienda" class="flex items-center gap-2 group min-w-0 flex-1">
+                <?php if (!empty($empresa['logo']) && is_file('../public/' . ltrim($empresa['logo'], '/'))): ?>
+                    <img src="<?= BASE_URL ?>/<?= htmlspecialchars(ltrim($empresa['logo'], '/')) ?>" alt="Logo" class="h-8 sm:h-10 w-auto object-contain flex-shrink-0">
                 <?php else: ?>
-                    <div class="w-11 h-11 rounded-xl bg-slate-900 flex items-center justify-center text-[#F97316] shadow-md group-hover:scale-105 transition-transform">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-slate-900 flex items-center justify-center text-[#F97316] shadow-md flex-shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 sm:w-6 sm:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
                             <line x1="3" y1="6" x2="21" y2="6"></line>
                             <path d="M16 10a4 4 0 0 1-8 0"></path>
                         </svg>
                     </div>
                 <?php endif; ?>
-                <div class="flex flex-col">
-                    <span class="font-headline font-extrabold text-lg sm:text-xl text-slate-900 leading-tight tracking-tight uppercase">
+                <div class="flex flex-col min-w-0 truncate">
+                    <span class="font-headline font-extrabold text-sm sm:text-xl text-slate-900 leading-tight tracking-tight uppercase truncate">
                         <?= htmlspecialchars($empresa['nombre'] ?? 'VARIEDADES') ?>
                     </span>
-                    <span class="font-headline font-bold text-[10px] text-[#F97316] tracking-widest uppercase -mt-0.5">
+                    <span class="font-headline font-bold text-[9px] sm:text-[10px] text-[#F97316] tracking-widest uppercase -mt-0.5 truncate">
                         MISCELÁNEA & BAZAR
                     </span>
                 </div>
             </a>
 
-            <!-- Formulario de Búsqueda -->
+            <!-- Formulario de Búsqueda (Escritorio) -->
             <div class="flex-1 max-w-2xl hidden md:block">
                 <form action="<?= BASE_URL ?>/tienda" method="GET" class="flex items-center h-11 bg-slate-100 rounded-xl border border-slate-200 focus-within:border-[#F97316] focus-within:bg-white focus-within:ring-2 focus-within:ring-[#F97316]/20 transition-all overflow-hidden">
                     <div class="relative flex items-center px-3 bg-slate-200/60 h-full text-xs font-semibold text-slate-700">
@@ -129,7 +131,7 @@
             </div>
 
             <!-- Acciones Header (Carrito / Login) -->
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-2 flex-shrink-0">
                 <?php if (!isset($_SESSION['user_id'])): ?>
                     <a href="<?= BASE_URL ?>/auth/index" class="hidden sm:flex items-center gap-1 px-3 py-2 text-xs font-semibold text-slate-700 hover:text-[#F97316] hover:bg-slate-100 rounded-lg transition-colors">
                         <span class="material-symbols-outlined text-[20px]">lock</span>
@@ -138,10 +140,10 @@
                 <?php endif; ?>
 
                 <!-- Botón Carrito de Compras -->
-                <button onclick="toggleCartDrawer()" class="flex items-center gap-3 bg-orange-50 hover:bg-orange-100 border border-orange-200/80 px-4 py-2 rounded-xl transition-all shadow-sm group">
+                <button onclick="toggleCartDrawer()" class="flex items-center gap-2 bg-orange-50 hover:bg-orange-100 border border-orange-200/80 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-xl transition-all shadow-sm group">
                     <div class="relative">
-                        <span class="material-symbols-outlined text-slate-800 group-hover:scale-110 transition-transform text-[24px]">shopping_bag</span>
-                        <span id="cart-badge-count" class="absolute -top-2 -right-2 bg-[#F97316] text-white text-[11px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-sm">0</span>
+                        <span class="material-symbols-outlined text-slate-800 group-hover:scale-110 transition-transform text-[22px] sm:text-[24px]">shopping_bag</span>
+                        <span id="cart-badge-count" class="absolute -top-2 -right-2 bg-[#F97316] text-white text-[10px] font-bold w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center shadow-sm">0</span>
                     </div>
                     <div class="hidden sm:flex flex-col text-left leading-tight">
                         <span class="text-[11px] font-medium text-slate-500">Mi Carrito</span>
@@ -152,8 +154,8 @@
         </div>
 
         <!-- Categorías Navbar -->
-        <nav class="bg-white border-t border-slate-100 overflow-x-auto">
-            <div class="max-w-[1440px] mx-auto px-4 sm:px-8 flex items-center gap-1 py-1.5 whitespace-nowrap text-xs font-semibold text-slate-600">
+        <nav class="bg-white border-t border-slate-100 overflow-x-auto max-w-full">
+            <div class="max-w-[1440px] mx-auto px-3 sm:px-8 flex items-center gap-1 py-1.5 whitespace-nowrap text-xs font-semibold text-slate-600">
                 <a href="<?= BASE_URL ?>/tienda" class="px-3 py-1.5 rounded-lg hover:bg-slate-100 <?= empty($_GET['cat']) ? 'bg-slate-900 text-white font-bold' : '' ?> transition-colors">
                     Todos los productos
                 </a>
@@ -164,6 +166,15 @@
                 <?php endforeach; ?>
             </div>
         </nav>
+
+        <!-- Buscador Responsivo Móvil -->
+        <div class="px-3 py-2 bg-slate-50 border-t border-slate-100 md:hidden">
+            <form action="<?= BASE_URL ?>/tienda" method="GET" class="flex items-center h-10 bg-white rounded-xl border border-slate-200 focus-within:border-[#F97316] shadow-xs px-3 gap-2">
+                <span class="material-symbols-outlined text-slate-400 text-[18px]">search</span>
+                <input type="text" name="q" value="<?= htmlspecialchars($_GET['q'] ?? '') ?>" placeholder="Buscar productos..." class="w-full bg-transparent text-xs text-slate-800 focus:outline-none">
+                <button type="submit" class="text-[#F97316] font-bold text-xs px-1">Buscar</button>
+            </form>
+        </div>
     </header>
 
     <!-- CONTENIDO PRINCIPAL -->
@@ -342,7 +353,7 @@
                     <a href="<?= BASE_URL ?>/tienda" class="inline-block bg-slate-900 text-white text-xs font-bold px-4 py-2 rounded-xl">Ver todos los productos</a>
                 </div>
             <?php else: ?>
-                <div id="grid-productos" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div id="grid-productos" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
                     <?php foreach ($productos as $p): ?>
                         <?php 
                             // 1. Manejo seguro de imagen (Validación is_file para evitar cargar carpetas o directorios)
@@ -354,25 +365,25 @@
                             // 2. Lógica de variaciones de stock y etiquetas llamativas
                             $stock = intval($p['stock_total']);
                             if ($stock <= 0) {
-                                $badgeTop = '<span class="absolute top-2.5 left-2.5 z-10 bg-rose-600 text-white font-extrabold text-[10px] px-2.5 py-0.5 rounded-full shadow uppercase">Agotado</span>';
-                                $stockLabel = '<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-bold bg-rose-100 text-rose-700">
+                                $badgeTop = '<span class="absolute top-2 left-2 z-10 bg-rose-600 text-white font-extrabold text-[9px] sm:text-[10px] px-2 py-0.5 rounded-full shadow uppercase">Agotado</span>';
+                                $stockLabel = '<span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] sm:text-[11px] font-bold bg-rose-100 text-rose-700">
                                                 <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> Agotado
                                                </span>';
                             } else if ($stock <= 10) {
-                                $badgeTop = '<span class="absolute top-2.5 left-2.5 z-10 bg-gradient-to-r from-amber-500 to-orange-600 text-white font-extrabold text-[10px] px-2.5 py-0.5 rounded-full shadow uppercase flex items-center gap-0.5">
-                                                <span class="material-symbols-outlined text-[13px]">local_fire_department</span> Pocas Unidades
+                                $badgeTop = '<span class="absolute top-2 left-2 z-10 bg-gradient-to-r from-amber-500 to-orange-600 text-white font-extrabold text-[9px] sm:text-[10px] px-2 py-0.5 rounded-full shadow uppercase flex items-center gap-0.5">
+                                                <span class="material-symbols-outlined text-[11px] sm:text-[13px]">local_fire_department</span> Pocas Unidades
                                              </span>';
-                                $stockLabel = '<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-amber-100 text-amber-800 border border-amber-300 animate-pulse">
-                                                <span class="material-symbols-outlined text-[14px] text-amber-600">local_fire_department</span> ¡Últimas ' . $stock . ' unidades!
+                                $stockLabel = '<span class="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] font-extrabold bg-amber-100 text-amber-800 border border-amber-300 animate-pulse">
+                                                <span class="material-symbols-outlined text-[12px] sm:text-[14px] text-amber-600">local_fire_department</span> ¡Últimas ' . $stock . ' unid!
                                                </span>';
                             } else {
-                                $badgeTop = '<span class="absolute top-2.5 left-2.5 z-10 bg-slate-900/90 text-white font-bold text-[10px] px-2 py-0.5 rounded-md backdrop-blur">' . htmlspecialchars($p['categoria_nombre'] ?? 'General') . '</span>';
-                                $stockLabel = '<span class="inline-flex items-center gap-1 text-emerald-600 font-semibold text-[11px]">
+                                $badgeTop = '<span class="absolute top-2 left-2 z-10 bg-slate-900/90 text-white font-bold text-[9px] sm:text-[10px] px-2 py-0.5 rounded-md backdrop-blur truncate max-w-[80%]">' . htmlspecialchars($p['categoria_nombre'] ?? 'General') . '</span>';
+                                $stockLabel = '<span class="inline-flex items-center gap-1 text-emerald-600 font-semibold text-[10px] sm:text-[11px]">
                                                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Stock: ' . $stock . ' unid.
                                                </span>';
                             }
                         ?>
-                        <div class="producto-card bg-white rounded-2xl border border-slate-200/80 p-4 flex flex-col justify-between shadow-sm hover:shadow-xl transition-all duration-300 group" 
+                        <div class="producto-card bg-white rounded-2xl border border-slate-200/80 p-2.5 sm:p-4 flex flex-col justify-between shadow-sm hover:shadow-xl transition-all duration-300 group" 
                              data-nombre="<?= strtolower(htmlspecialchars($p['nombre'])) ?>" 
                              data-categoria="<?= strtolower(htmlspecialchars($p['categoria_nombre'] ?? '')) ?>">
                             

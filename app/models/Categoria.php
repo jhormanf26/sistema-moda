@@ -11,7 +11,9 @@ class Categoria {
     }
 
     public function listarActivas() {
-        $sql = "SELECT * FROM categorias WHERE activo = 1 ORDER BY nombre ASC";
+        $sql = "SELECT id, nombre, descripcion, activo,
+                (SELECT COUNT(*) FROM productos WHERE categoria_id = categorias.id AND activo = 1) as total_productos 
+                FROM categorias WHERE activo = 1 ORDER BY nombre ASC";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

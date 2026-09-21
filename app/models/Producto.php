@@ -234,7 +234,7 @@ class Producto {
                  WHERE v.producto_id = p.id) as stock_total
                 FROM productos p
                 LEFT JOIN categorias c ON p.categoria_id = c.id
-                WHERE p.activo = 1";
+                WHERE p.activo = 1 AND (p.categoria_id IS NULL OR c.activo = 1)";
         
         $params = [];
         if (!empty($categoria_id)) {
@@ -275,7 +275,7 @@ class Producto {
                  WHERE v.producto_id = p.id) as stock_total
                 FROM productos p
                 LEFT JOIN categorias c ON p.categoria_id = c.id
-                WHERE p.id = :id AND p.activo = 1";
+                WHERE p.id = :id AND p.activo = 1 AND (p.categoria_id IS NULL OR c.activo = 1)";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([':id' => $id]);
         $prod = $stmt->fetch(PDO::FETCH_ASSOC);

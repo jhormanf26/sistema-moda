@@ -21,7 +21,7 @@ class TiendaController {
         $categoria_id = isset($_GET['cat']) ? intval($_GET['cat']) : null;
         $busqueda = isset($_GET['q']) ? trim($_GET['q']) : null;
 
-        $categorias = $categoriaModel->listarTodas();
+        $categorias = $categoriaModel->listarActivas();
         $productos = $productoModel->obtenerProductosTienda($categoria_id, $busqueda);
         $empresa = $empresaModel->obtener();
         $sucursales = $sucursalModel->listar();
