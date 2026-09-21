@@ -116,7 +116,12 @@ EOD;
                 return ['valid' => false, 'error' => 'LICENCIA INVÁLIDA O CORRUPTA'];
             }
 
-            $ok = openssl_verify($payloadB64, $signature, self::PUBLIC_KEY, OPENSSL_ALGO_SHA256);
+            $pubKey = @openssl_pkey_get_public(self::PUBLIC_KEY);
+            if (!$pubKey) {
+                return ['valid' => false, 'error' => 'LICENCIA INVÁLIDA O CORRUPTA'];
+            }
+
+            $ok = @openssl_verify($payloadB64, $signature, $pubKey, OPENSSL_ALGO_SHA256);
             if ($ok !== 1) {
                 return ['valid' => false, 'error' => 'LICENCIA INVÁLIDA O CORRUPTA'];
             }
@@ -274,13 +279,20 @@ EOD;
     }
 
     private static function responderOBloquear($mensajeError) {
+        if (session_status() === PHP_SESSION_NONE) {
+            @session_start();
+        }
         if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
             header('Content-Type: application/json');
             echo json_encode(['error' => $mensajeError]);
             exit;
         } else {
             $_SESSION['error_licencia'] = $mensajeError;
-            header('Location: ' . BASE_URL . '/license?err=' . urlencode($mensajeError));
+            if (!headers_sent()) {
+                header('Location: ' . BASE_URL . '/license?err=' . urlencode($mensajeError));
+            } else {
+                echo "<script>window.location.href='" . BASE_URL . "/license?err=" . urlencode($mensajeError) . "';</script>";
+            }
             exit;
         }
     }
