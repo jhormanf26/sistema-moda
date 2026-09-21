@@ -4,25 +4,25 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f973f8e8bf18999e28d9a212c8a20706",
+    "content-hash": "1e88b418b0dc30cec66525811219fc3b",
     "packages": [
         {
             "name": "picqer/php-barcode-generator",
-            "version": "v3.2.3",
+            "version": "v2.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/picqer/php-barcode-generator.git",
-                "reference": "fbb1de7454fcc8600133818bc1103abeb86479a4"
+                "reference": "e9d39681f617705492b609fc3fc58465ef88e8fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/picqer/php-barcode-generator/zipball/fbb1de7454fcc8600133818bc1103abeb86479a4",
-                "reference": "fbb1de7454fcc8600133818bc1103abeb86479a4",
+                "url": "https://api.github.com/repos/picqer/php-barcode-generator/zipball/e9d39681f617705492b609fc3fc58465ef88e8fd",
+                "reference": "e9d39681f617705492b609fc3fc58465ef88e8fd",
                 "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
-                "php": "^8.2"
+                "php": "^8.1"
             },
             "require-dev": {
                 "phpstan/phpstan": "^1.10",
@@ -45,14 +45,14 @@
             ],
             "authors": [
                 {
-                    "name": "Casper Bakker",
-                    "email": "info@picqer.com",
-                    "homepage": "https://picqer.com"
-                },
-                {
                     "name": "Nicola Asuni",
                     "email": "info@tecnick.com",
                     "homepage": "http://nicolaasuni.tecnick.com"
+                },
+                {
+                    "name": "Casper Bakker",
+                    "email": "info@picqer.com",
+                    "homepage": "https://picqer.com"
                 }
             ],
             "description": "An easy to use, non-bloated, barcode generator in PHP. Creates SVG, PNG, JPG and HTML images from the most used 1D barcode standards.",
@@ -83,27 +83,29 @@
             ],
             "support": {
                 "issues": "https://github.com/picqer/php-barcode-generator/issues",
-                "source": "https://github.com/picqer/php-barcode-generator/tree/v3.2.3"
+                "source": "https://github.com/picqer/php-barcode-generator/tree/v2.4.2"
             },
-            "time": "2025-07-29T07:15:20+00:00"
+            "funding": [
+                {
+                    "url": "https://github.com/casperbakker",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-09-18T08:09:33+00:00"
         },
         {
             "name": "setasign/fpdf",
-            "version": "1.8.6",
+            "version": "1.8.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Setasign/FPDF.git",
-                "reference": "0838e0ee4925716fcbbc50ad9e1799b5edfae0a0"
+                "reference": "d77904018090c17dc9f3ab6e944679a7a47e710a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Setasign/FPDF/zipball/0838e0ee4925716fcbbc50ad9e1799b5edfae0a0",
-                "reference": "0838e0ee4925716fcbbc50ad9e1799b5edfae0a0",
+                "url": "https://api.github.com/repos/Setasign/FPDF/zipball/d77904018090c17dc9f3ab6e944679a7a47e710a",
+                "reference": "d77904018090c17dc9f3ab6e944679a7a47e710a",
                 "shasum": ""
-            },
-            "require": {
-                "ext-gd": "*",
-                "ext-zlib": "*"
             },
             "type": "library",
             "autoload": {
@@ -129,9 +131,9 @@
                 "pdf"
             ],
             "support": {
-                "source": "https://github.com/Setasign/FPDF/tree/1.8.6"
+                "source": "https://github.com/Setasign/FPDF/tree/1.8.2"
             },
-            "time": "2023-06-26T14:44:25+00:00"
+            "time": "2019-12-08T10:32:10+00:00"
         }
     ],
     "packages-dev": [],
@@ -142,5 +144,8 @@
     "prefer-lowest": false,
     "platform": {},
     "platform-dev": {},
+    "platform-overrides": {
+        "php": "8.1.10"
+    },
     "plugin-api-version": "2.6.0"
 }
