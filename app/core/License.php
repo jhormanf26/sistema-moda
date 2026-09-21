@@ -232,6 +232,11 @@ EOD;
             $data['fecha_fin'] = date('Y-m-d', (int)$data['exp']);
         }
 
+        $cache = self::getCache();
+        $data['last_check_ms'] = $cache['last_check_ms'] ?? 0;
+        $data['remote_status'] = $cache['remote_status'] ?? 'ok';
+        $data['panel_url']     = rtrim(getenv('PANEL_LICENCIAS_URL') ?: ($_ENV['PANEL_LICENCIAS_URL'] ?? 'http://localhost:4000'), '/');
+
         return $data;
     }
 

@@ -243,6 +243,24 @@ if (!$licValida) {
                                     </div>
                                 </div>
                                 <?php endif; ?>
+                                <div class="col-12">
+                                    <div class="info-box bg-light border-start border-4 border-primary">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <div class="lbl text-primary"><i class="bi bi-broadcast me-1"></i>Última Sincronización Remota</div>
+                                                <div class="val text-dark" style="font-size: 0.9rem;">
+                                                    <?= !empty($licInfo['last_check_ms']) ? date('d/m/Y h:i:s A', (int)($licInfo['last_check_ms'] / 1000)) : 'Sin verificaciones recientes' ?>
+                                                    <span class="text-muted small"> (Servidor: <?= htmlspecialchars($licInfo['panel_url'] ?? '') ?>)</span>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <span class="badge bg-<?= ($licInfo['remote_status'] ?? 'ok') === 'ok' ? 'success' : 'danger' ?>">
+                                                    <?= ($licInfo['remote_status'] ?? 'ok') === 'ok' ? 'En Línea / Resiliente' : 'Bloqueado por Panel' ?>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <?php else: ?>
                             <div class="text-center py-5 text-muted">
