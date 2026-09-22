@@ -99,7 +99,7 @@
                         <?= htmlspecialchars($empresa['nombre'] ?? 'VARIEDADES') ?>
                     </span>
                     <span class="font-headline font-bold text-[9px] sm:text-[10px] text-[#F97316] tracking-widest uppercase -mt-0.5 truncate">
-                        MISCELÁNEA & BAZAR
+                        BEAUTY & ACCESSORIES
                     </span>
                 </div>
             </a>
@@ -121,7 +121,7 @@
                     <div class="h-6 w-px bg-slate-300"></div>
                     <div class="relative flex-1 flex items-center h-full">
                         <span class="material-symbols-outlined absolute left-3 text-slate-400 text-[20px]">search</span>
-                        <input type="text" name="q" value="<?= htmlspecialchars($_GET['q'] ?? '') ?>" placeholder="Buscar papelería, herramientas, cables, hogar..." class="w-full h-full pl-10 pr-3 bg-transparent text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none">
+                        <input type="text" name="q" value="<?= htmlspecialchars($_GET['q'] ?? '') ?>" placeholder="Buscar maquillaje, skincare, labiales, joyería, accesorios..." class="w-full h-full pl-10 pr-3 bg-transparent text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none">
                     </div>
                     <button type="submit" class="h-full px-5 bg-[#F97316] hover:bg-[#ea580c] text-white font-bold text-sm flex items-center gap-1 transition-colors">
                         <span class="material-symbols-outlined text-[18px]">search</span>
@@ -180,120 +180,121 @@
     <!-- CONTENIDO PRINCIPAL -->
     <main class="max-w-[1440px] w-full mx-auto px-4 sm:px-8 py-6 space-y-8 flex-1">
 
-        <!-- 1. HERO BENTO BANNER -->
+        <!-- 1. HERO BENTO BANNER (BEAUTY & ACCESSORIES) -->
         <section class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
             <!-- Banner Principal -->
-            <div class="lg:col-span-8 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white rounded-3xl p-6 sm:p-10 flex flex-col justify-between shadow-xl relative overflow-hidden group">
+            <div class="lg:col-span-8 bg-gradient-to-br from-slate-950 via-rose-950/40 to-slate-900 text-white rounded-3xl p-6 sm:p-10 flex flex-col justify-between shadow-xl relative overflow-hidden group border border-rose-900/30">
                 <!-- SVG Grid Backdrop -->
-                <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#F97316_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                <div class="absolute inset-0 opacity-15 bg-[radial-gradient(#f43f5e_1px,transparent_1px)] [background-size:20px_20px]"></div>
+                <div class="absolute -right-16 -bottom-16 w-80 h-80 bg-rose-500/10 rounded-full blur-3xl pointer-events-none"></div>
                 
                 <div class="relative z-10 space-y-4 max-w-xl">
-                    <span class="inline-flex items-center gap-1.5 bg-[#F97316]/20 border border-[#F97316]/40 text-[#F97316] text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">
-                        <span class="material-symbols-outlined text-[16px]">verified</span>
-                        Surtido Completo & Envío Exprés
+                    <span class="inline-flex items-center gap-1.5 bg-rose-500/20 border border-rose-400/40 text-rose-300 text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">
+                        <span class="material-symbols-outlined text-[16px]">auto_awesome</span>
+                        Beauty & Accesorios de Tendencia
                     </span>
                     <h1 class="font-headline font-extrabold text-3xl sm:text-5xl leading-tight tracking-tight text-white">
-                        Todo lo que necesitas para tu <span class="text-[#F97316] underline decoration-amber-400 decoration-4 underline-offset-4">día a día</span> en un solo lugar
+                        Resalta tu <span class="text-rose-400 underline decoration-amber-300 decoration-4 underline-offset-4">belleza & estilo</span> único cada día
                     </h1>
                     <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
-                        Papelería, ferretería ligera, artículos del hogar, snacks y tecnología. Pide en línea y recibe rápido o retira directamente en tienda.
+                        Cuidado personal, cosmética, skincare y accesorios de moda seleccionados para hacer lucir tu mejor versión. Envíos exprés directos a tu puerta o retiro en tienda.
                     </p>
                 </div>
 
                 <div class="relative z-10 pt-8 flex flex-wrap items-center gap-4">
-                    <a href="#catalogo" class="bg-[#F97316] hover:bg-[#ea580c] text-white font-headline font-bold text-sm px-6 py-3.5 rounded-xl shadow-lg hover:shadow-orange-500/30 transition-all flex items-center gap-2">
-                        <span class="material-symbols-outlined text-[20px]">storefront</span>
-                        <span>Ver Catálogo de Productos</span>
+                    <a href="#catalogo" class="bg-rose-600 hover:bg-rose-700 text-white font-headline font-bold text-sm px-6 py-3.5 rounded-xl shadow-lg hover:shadow-rose-600/30 transition-all flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[20px]">sparkles</span>
+                        <span>Explorar Colección Beauty</span>
                     </a>
-                    <a href="https://api.whatsapp.com/send?phone=<?= preg_replace('/[^0-9]/', '', $empresa['telefono'] ?? '525512345678') ?>&text=Hola,%20quisiera%20hacer%20un%20pedido%20directo" target="_blank" class="bg-white/10 hover:bg-white/20 border border-white/20 text-white font-headline font-semibold text-sm px-6 py-3.5 rounded-xl backdrop-blur transition-all flex items-center gap-2">
+                    <a href="https://api.whatsapp.com/send?phone=<?= preg_replace('/[^0-9]/', '', $empresa['telefono'] ?? '525512345678') ?>&text=Hola,%20quisiera%20consultar%20por%20sus%20productos%20de%20Beauty%20%26%20Accessories" target="_blank" class="bg-white/10 hover:bg-white/20 border border-white/20 text-white font-headline font-semibold text-sm px-6 py-3.5 rounded-xl backdrop-blur transition-all flex items-center gap-2">
                         <span class="material-symbols-outlined text-[20px] text-emerald-400">chat</span>
                         <span>Pedir por WhatsApp</span>
                     </a>
                 </div>
             </div>
 
-            <!-- Promos Laterales -->
+            <!-- Promos Laterales Beauty -->
             <div class="lg:col-span-4 flex flex-col gap-6">
-                <!-- Card Promo 1 -->
-                <div class="bg-amber-50 border border-amber-200/80 rounded-2xl p-5 flex flex-col justify-between shadow-sm hover:shadow-md transition-all relative overflow-hidden group">
+                <!-- Card Promo 1: Maquillaje & Skincare -->
+                <div class="bg-rose-50/80 border border-rose-200/80 rounded-2xl p-5 flex flex-col justify-between shadow-sm hover:shadow-md transition-all relative overflow-hidden group">
                     <div class="space-y-2 relative z-10">
-                        <span class="bg-slate-900 text-white font-bold text-[10px] uppercase px-2.5 py-0.5 rounded">Oferta Destacada</span>
-                        <h3 class="font-headline font-bold text-slate-900 text-lg group-hover:text-[#F97316] transition-colors">
-                            Papelería & Utiles Escolares
+                        <span class="bg-rose-900 text-white font-bold text-[10px] uppercase px-2.5 py-0.5 rounded">Tendencia Beauty</span>
+                        <h3 class="font-headline font-bold text-slate-900 text-lg group-hover:text-rose-600 transition-colors">
+                            Maquillaje & Skincare
                         </h3>
                         <p class="text-slate-600 text-xs">
-                            Cuadernos, marcadores y todo para oficina al mejor precio.
+                            Paletas de sombras, labiales, sueros faciales, cosmetiqueras y cuidado personal.
                         </p>
                     </div>
                     <div class="pt-4 flex items-center justify-between relative z-10">
-                        <a href="#catalogo" class="font-bold text-xs text-[#F97316] hover:underline flex items-center gap-1">
-                            Explorar pasillo <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                        <a href="#catalogo" class="font-bold text-xs text-rose-600 hover:underline flex items-center gap-1">
+                            Ver Maquillaje <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
                         </a>
-                        <span class="w-9 h-9 rounded-full bg-white shadow-sm flex items-center justify-center text-slate-800">
-                            <span class="material-symbols-outlined text-[20px]">edit_note</span>
+                        <span class="w-9 h-9 rounded-full bg-white shadow-sm flex items-center justify-center text-rose-600">
+                            <span class="material-symbols-outlined text-[20px]">auto_awesome</span>
                         </span>
                     </div>
                 </div>
 
-                <!-- Card Promo 2 -->
-                <div class="bg-emerald-50 border border-emerald-200/80 rounded-2xl p-5 flex flex-col justify-between shadow-sm hover:shadow-md transition-all relative overflow-hidden group">
+                <!-- Card Promo 2: Accesorios & Joyería -->
+                <div class="bg-purple-50/80 border border-purple-200/80 rounded-2xl p-5 flex flex-col justify-between shadow-sm hover:shadow-md transition-all relative overflow-hidden group">
                     <div class="space-y-2 relative z-10">
-                        <span class="bg-emerald-700 text-white font-bold text-[10px] uppercase px-2.5 py-0.5 rounded">Ferretería Express</span>
-                        <h3 class="font-headline font-bold text-slate-900 text-lg group-hover:text-emerald-700 transition-colors">
-                            Hogar & Herramientas
+                        <span class="bg-purple-900 text-white font-bold text-[10px] uppercase px-2.5 py-0.5 rounded">Moda & Estilo</span>
+                        <h3 class="font-headline font-bold text-slate-900 text-lg group-hover:text-purple-700 transition-colors">
+                            Joyería & Accesorios
                         </h3>
                         <p class="text-slate-600 text-xs">
-                            Cintas, focos LED, extensiones y soluciones rápidas.
+                            Cadenas, aretes, scrunchies, monederos y complementos de moda.
                         </p>
                     </div>
                     <div class="pt-4 flex items-center justify-between relative z-10">
-                        <a href="#catalogo" class="font-bold text-xs text-emerald-700 hover:underline flex items-center gap-1">
-                            Ver artículos <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                        <a href="#catalogo" class="font-bold text-xs text-purple-700 hover:underline flex items-center gap-1">
+                            Ver Accesorios <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
                         </a>
-                        <span class="w-9 h-9 rounded-full bg-white shadow-sm flex items-center justify-center text-slate-800">
-                            <span class="material-symbols-outlined text-[20px]">build</span>
+                        <span class="w-9 h-9 rounded-full bg-white shadow-sm flex items-center justify-center text-[#F97316]">
+                            <span class="material-symbols-outlined text-[20px]">diamond</span>
                         </span>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 2. BARRA DE BENEFICIOS / VALORES -->
+        <!-- 2. BARRA DE BENEFICIOS / VALORES BEAUTY -->
         <section class="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200/80 shadow-sm grid grid-cols-2 md:grid-cols-4 gap-4">
             <div class="flex items-center gap-3 p-2">
-                <div class="w-10 h-10 rounded-xl bg-orange-100 text-[#F97316] flex items-center justify-center flex-shrink-0">
-                    <span class="material-symbols-outlined text-[22px]">rocket_launch</span>
+                <div class="w-10 h-10 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center flex-shrink-0">
+                    <span class="material-symbols-outlined text-[22px]">local_shipping</span>
                 </div>
                 <div>
-                    <div class="font-headline font-bold text-xs text-slate-900">Entrega Local Rápida</div>
-                    <div class="text-[11px] text-slate-500">Envíos directos a tu puerta</div>
+                    <div class="font-headline font-bold text-xs text-slate-900">Envíos Rápidos</div>
+                    <div class="text-[11px] text-slate-500">Entrega directa a tu puerta</div>
                 </div>
             </div>
             <div class="flex items-center gap-3 p-2">
-                <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0">
-                    <span class="material-symbols-outlined text-[22px]">store</span>
+                <div class="w-10 h-10 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center flex-shrink-0">
+                    <span class="material-symbols-outlined text-[22px]">verified</span>
                 </div>
                 <div>
-                    <div class="font-headline font-bold text-xs text-slate-900">Retiro en Tienda</div>
-                    <div class="text-[11px] text-slate-500">Listo en mostrador rápidamente</div>
+                    <div class="font-headline font-bold text-xs text-slate-900">Calidad Garantizada</div>
+                    <div class="text-[11px] text-slate-500">Productos para tu piel y estilo</div>
                 </div>
             </div>
             <div class="flex items-center gap-3 p-2">
                 <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center flex-shrink-0">
-                    <span class="material-symbols-outlined text-[22px]">verified_user</span>
+                    <span class="material-symbols-outlined text-[22px]">payments</span>
                 </div>
                 <div>
-                    <div class="font-headline font-bold text-xs text-slate-900">Pago Seguro</div>
-                    <div class="text-[11px] text-slate-500">Efectivo contra entrega o Yape/Plin</div>
+                    <div class="font-headline font-bold text-xs text-slate-900">Pago Flexible</div>
+                    <div class="text-[11px] text-slate-500">Contra entrega, Yape/Plin o tarjeta</div>
                 </div>
             </div>
             <div class="flex items-center gap-3 p-2">
                 <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center flex-shrink-0">
-                    <span class="material-symbols-outlined text-[22px]">sell</span>
+                    <span class="material-symbols-outlined text-[22px]">support_agent</span>
                 </div>
                 <div>
-                    <div class="font-headline font-bold text-xs text-slate-900">Precios de Mayoreo</div>
-                    <div class="text-[11px] text-slate-500">Descuentos especiales por cantidad</div>
+                    <div class="font-headline font-bold text-xs text-slate-900">Asesoría WhatsApp</div>
+                    <div class="text-[11px] text-slate-500">Atención personalizada directa</div>
                 </div>
             </div>
         </section>
@@ -326,6 +327,110 @@
                 <?php endforeach; ?>
             </div>
         </section>
+
+        <!-- 3.5 SECCIÓN DE COMBOS & PACKS PROMOCIONALES -->
+        <?php if (!empty($combos)): ?>
+        <section id="combos" class="space-y-4 pt-2">
+            <div class="flex items-end justify-between border-b border-rose-100 pb-3">
+                <div>
+                    <span class="text-xs font-bold text-rose-600 uppercase tracking-wider flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[16px]">auto_awesome</span> Ahorro & Ofertas Especiales
+                    </span>
+                    <h2 class="font-headline font-extrabold text-xl sm:text-2xl text-slate-900">Combos & Packs Promocionales 🎁</h2>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <?php foreach ($combos as $combo): ?>
+                    <div class="bg-white border border-slate-200/90 rounded-3xl p-5 shadow-sm hover:shadow-xl transition-all flex flex-col justify-between relative overflow-hidden group">
+                        
+                        <!-- Header & Badges -->
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between gap-2">
+                                <span class="bg-rose-50 border border-rose-200 text-rose-700 font-headline font-bold text-[10px] uppercase px-2.5 py-1 rounded-full flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-[14px]">stars</span> Pack Promocional
+                                </span>
+                                <?php if ($combo['estado_stock'] === 'disponible'): ?>
+                                    <span class="bg-emerald-100 text-emerald-700 font-bold text-[10px] uppercase px-2.5 py-1 rounded-full flex items-center gap-1">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Disponible
+                                    </span>
+                                <?php else: ?>
+                                    <span class="bg-rose-100 text-rose-700 font-bold text-[10px] uppercase px-2.5 py-1 rounded-full flex items-center gap-1">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> Agotado
+                                    </span>
+                                <?php endif; ?>
+                            </div>
+
+                            <!-- Imagen del Combo -->
+                            <div class="w-full h-48 rounded-2xl bg-gradient-to-br from-rose-50 to-slate-50 border border-slate-100 overflow-hidden relative flex items-center justify-center">
+                                <?php if (!empty($combo['imagen'])): ?>
+                                    <img src="<?= BASE_URL ?>/<?= htmlspecialchars($combo['imagen']) ?>" alt="<?= htmlspecialchars($combo['nombre']) ?>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                <?php else: ?>
+                                    <div class="text-center p-4">
+                                        <span class="material-symbols-outlined text-5xl text-rose-400 mb-1">card_giftcard</span>
+                                        <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">Pack Especial</div>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+
+                            <!-- Nombre y Descripción -->
+                            <div>
+                                <h3 class="font-headline font-bold text-lg text-slate-900 group-hover:text-rose-600 transition-colors line-clamp-1">
+                                    <?= htmlspecialchars($combo['nombre']) ?>
+                                </h3>
+                                <p class="text-xs text-slate-500 line-clamp-2 mt-1">
+                                    <?= htmlspecialchars($combo['descripcion'] ?? 'Aprovecha este pack promocional con productos seleccionados.') ?>
+                                </p>
+                            </div>
+
+                            <!-- Desglose de Productos Incluidos -->
+                            <div class="bg-slate-50 rounded-2xl p-3 border border-slate-100 space-y-1.5">
+                                <div class="text-[11px] font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-[14px] text-rose-500">checklist</span>
+                                    Incluye <?= count($combo['items']) ?> producto(s):
+                                </div>
+                                <ul class="space-y-1">
+                                    <?php foreach ($combo['items'] as $it): ?>
+                                        <li class="text-xs text-slate-700 flex items-center justify-between">
+                                            <span class="truncate pr-2">• <strong><?= $it['cantidad'] ?>x</strong> <?= htmlspecialchars($it['producto_nombre']) ?></span>
+                                            <?php if ($it['stock_total_producto'] < $it['cantidad']): ?>
+                                                <span class="text-[10px] font-bold text-rose-500 flex-shrink-0">(Sin stock)</span>
+                                            <?php endif; ?>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Footer Precio y Acción -->
+                        <div class="pt-4 border-t border-slate-100 mt-4 flex items-center justify-between gap-3">
+                            <div>
+                                <div class="text-[10px] text-slate-400 font-bold uppercase">Precio Especial</div>
+                                <div class="flex items-baseline gap-1.5">
+                                    <span class="font-headline font-extrabold text-2xl text-rose-600">
+                                        <?= $empresa['moneda'] ?? '$' ?> <?= number_format($combo['precio'], 2) ?>
+                                    </span>
+                                    <?php if ($combo['ahorro'] > 0): ?>
+                                        <span class="text-xs text-slate-400 line-through">
+                                            <?= $empresa['moneda'] ?? '$' ?> <?= number_format($combo['precio_original_total'], 2) ?>
+                                        </span>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+
+                            <button onclick='agregarComboAlCarrito(<?= json_encode($combo) ?>)' 
+                                    <?= $combo['estado_stock'] === 'agotado' ? 'disabled' : '' ?>
+                                    class="bg-rose-600 hover:bg-rose-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white font-headline font-bold text-xs px-4 py-2.5 rounded-xl flex items-center gap-1.5 shadow-md active:scale-95 transition-all">
+                                <span class="material-symbols-outlined text-[18px]">add_shopping_cart</span>
+                                <span><?= $combo['estado_stock'] === 'agotado' ? 'Agotado' : 'Agregar Combo' ?></span>
+                            </button>
+                        </div>
+
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </section>
+        <?php endif; ?>
 
         <!-- 4. SECCIÓN CATÁLOGO DE PRODUCTOS -->
         <section id="catalogo" class="space-y-6 pt-4">
@@ -590,6 +695,31 @@
                     precio: parseFloat(producto.precio_venta),
                     imagen: producto.imagen,
                     cantidad: cantidad
+                });
+            }
+            guardarCarrito();
+            toggleCartDrawer(true);
+        }
+
+        function agregarComboAlCarrito(combo) {
+            if (combo.estado_stock === 'agotado') {
+                alert('Este combo está agotado por falta de stock en uno de sus componentes.');
+                return;
+            }
+            const key = `combo-${combo.id}`;
+            const index = carrito.findIndex(i => i.key === key);
+            if (index > -1) {
+                carrito[index].cantidad += 1;
+            } else {
+                const descItems = combo.items ? combo.items.map(it => `${it.cantidad}x ${it.producto_nombre}`).join(', ') : '';
+                carrito.push({
+                    key: key,
+                    id: combo.id,
+                    nombre: `🎁 ${combo.nombre} (${descItems})`,
+                    precio: parseFloat(combo.precio),
+                    imagen: combo.imagen,
+                    cantidad: 1,
+                    esCombo: true
                 });
             }
             guardarCarrito();

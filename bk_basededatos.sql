@@ -379,6 +379,31 @@ INSERT INTO `venta_detalles` (`id`, `venta_id`, `variante_id`, `cantidad`, `prec
 	(2, 1, 4, 1, 110.00, 110.00),
 	(3, 2, 3, 2, 110.00, 220.00);
 
+-- Volcando estructura para tabla sistema_moda.combos
+CREATE TABLE IF NOT EXISTS `combos` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(200) NOT NULL,
+  `descripcion` text DEFAULT NULL,
+  `precio` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `imagen` varchar(255) DEFAULT NULL,
+  `activo` tinyint(1) DEFAULT '1',
+  `fecha_creacion` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Volcando estructura para tabla sistema_moda.combo_items
+CREATE TABLE IF NOT EXISTS `combo_items` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `combo_id` int NOT NULL,
+  `producto_id` int NOT NULL,
+  `cantidad` int NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  KEY `fk_combo_items_combos` (`combo_id`),
+  KEY `fk_combo_items_productos` (`producto_id`),
+  CONSTRAINT `fk_combo_items_combos` FOREIGN KEY (`combo_id`) REFERENCES `combos` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_combo_items_productos` FOREIGN KEY (`producto_id`) REFERENCES `productos` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;

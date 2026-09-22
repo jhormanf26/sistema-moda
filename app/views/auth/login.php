@@ -35,7 +35,7 @@ $logoEmpresa = $empresaGlobal['logo'] ?? null;
         }
         .login-image {
             flex: 1.2;
-            background: url('https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?q=80&w=1200&auto=format&fit=crop') center/cover no-repeat;
+            background: url('<?= BASE_URL ?>/img/login_bg.jpg') center/cover no-repeat;
             position: relative;
         }
         .login-image::after {
@@ -102,7 +102,7 @@ $logoEmpresa = $empresaGlobal['logo'] ?? null;
         <!-- Lado Izquierdo: Imagen -->
         <div class="login-image d-none d-md-block">
             <div class="login-image-content">
-                <h2 class="fw-bold mb-2 font-monospace" style="font-size: 2.5rem; color: #f8dbb2; text-shadow: 2px 2px 6px rgba(0,0,0,0.8);"><i class="bi bi-stars text-warning" style="text-shadow: none;"></i> Fashion<br>Retail</h2>
+                <h2 class="fw-bold mb-2 font-monospace" style="font-size: 2.5rem; color: #f8dbb2; text-shadow: 2px 2px 6px rgba(0,0,0,0.8);"><i class="bi bi-stars text-warning" style="text-shadow: none;"></i> Beauty & Accessories</h2>
                 <p class="fs-5 opacity-85 mb-0" style="max-width:300px; color: #ffffff; text-shadow: 1px 1px 4px rgba(0,0,0,0.8);">Controla tus ventas, inventario y sucursales desde un solo lugar con la elegancia que tu marca merece.</p>
             </div>
         </div>
@@ -117,7 +117,7 @@ $logoEmpresa = $empresaGlobal['logo'] ?? null;
                         <i class="bi bi-shop fs-1"></i>
                     </div>
                 <?php endif; ?>
-                <h1 class="brand-logo-text">Sistema Moda</h1>
+                <h1 class="brand-logo-text">Sistema</h1>
                 <p class="text-muted fw-bold text-uppercase" style="letter-spacing: 2px; font-size: 0.75rem;">Control de Acceso</p>
             </div>
 

@@ -3,6 +3,7 @@
 
 require_once '../app/models/Producto.php';
 require_once '../app/models/Categoria.php';
+require_once '../app/models/Combo.php';
 require_once '../app/models/Empresa.php';
 require_once '../app/models/Sucursal.php';
 
@@ -15,15 +16,17 @@ class TiendaController {
 
         $productoModel = new Producto();
         $categoriaModel = new Categoria();
-        $empresaModel = new Empresa();
-        $sucursalModel = new Sucursal();
+        $comboModel     = new Combo();
+        $empresaModel   = new Empresa();
+        $sucursalModel  = new Sucursal();
 
         $categoria_id = isset($_GET['cat']) ? intval($_GET['cat']) : null;
         $busqueda = isset($_GET['q']) ? trim($_GET['q']) : null;
 
         $categorias = $categoriaModel->listarActivas();
-        $productos = $productoModel->obtenerProductosTienda($categoria_id, $busqueda);
-        $empresa = $empresaModel->obtener();
+        $productos  = $productoModel->obtenerProductosTienda($categoria_id, $busqueda);
+        $combos     = $comboModel->obtenerCombosTienda();
+        $empresa    = $empresaModel->obtener();
         $sucursales = $sucursalModel->listar();
 
         // Si es una solicitud AJAX para filtrar productos sin recargar

@@ -64,6 +64,7 @@ if ($_licInfo && isset($_licInfo['fecha_fin'])) {
     
     <?php if(isset($_SESSION['user_rol']) && $_SESSION['user_rol'] == 'admin'): ?>
         <li><a href="<?= BASE_URL ?>/categoria/index" class="nav-link <?= strpos($current_url, '/categoria') !== false ? 'active' : '' ?>"><i class="bi bi-tags me-2"></i> Categorías</a></li>
+        <li><a href="<?= BASE_URL ?>/combo/index" class="nav-link <?= strpos($current_url, '/combo') !== false ? 'active' : '' ?>"><i class="bi bi-gift-fill text-danger me-2"></i> Combos & Packs</a></li>
     <?php endif; ?>
 
     <li><a href="<?= BASE_URL ?>/etiqueta/index" class="nav-link <?= strpos($current_url, '/etiqueta') !== false ? 'active' : '' ?>"><i class="bi bi-upc-scan me-2"></i> Códigos de Barra</a></li>
