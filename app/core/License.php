@@ -252,7 +252,7 @@ EOD;
     }
 
     public static function getToken() {
-        // 1. Verificar si el token viene configurado como variable de entorno (Ideal para Dokploy / Docker)
+        // 1. Verificar si el token viene configurado como variable de entorno
         $envToken = getenv('LICENCIA_TOKEN') ?: ($_ENV['LICENCIA_TOKEN'] ?? null);
         if (!empty($envToken)) {
             return trim($envToken);
@@ -271,10 +271,33 @@ EOD;
         if (file_exists(self::$keyFile)) {
             $token = trim(@file_get_contents(self::$keyFile));
             if (!empty($token)) {
-                // Sincronizar hacia jsonFile
                 self::saveToken($token);
                 return $token;
             }
+        }
+
+        // 4. Buscar token en la Base de Datos (Garantiza persistencia permanente entre despliegues de Dokploy/Docker)
+        try {
+            if (!class_exists('Database')) {
+                require_once dirname(__DIR__) . '/core/Database.php';
+            }
+            $db = new Database();
+            $conn = $db->getConnection();
+            if ($conn) {
+                $stmt = $conn->query("SELECT licencia_token FROM empresa WHERE id = 1 LIMIT 1");
+                $row = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : null;
+                if ($row && !empty(trim($row['licencia_token'] ?? ''))) {
+                    $dbToken = trim($row['licencia_token']);
+                    // Auto-restaurar archivos locales en el contenedor
+                    $jsonDir = dirname(self::$jsonFile);
+                    if (!file_exists($jsonDir)) { @mkdir($jsonDir, 0777, true); }
+                    @file_put_contents(self::$jsonFile, json_encode(['token' => $dbToken], JSON_PRETTY_PRINT));
+                    @file_put_contents(self::$keyFile, $dbToken);
+                    return $dbToken;
+                }
+            }
+        } catch (Exception $e) {
+            // Ignorar silenciosamente si la base de datos o tabla no está disponible aún
         }
 
         return '';
@@ -288,8 +311,25 @@ EOD;
         if (!file_exists($jsonDir)) { @mkdir($jsonDir, 0777, true); }
         @file_put_contents(self::$jsonFile, json_encode(['token' => $token], JSON_PRETTY_PRINT));
 
-        // Guardar también en config/license.key para retrocompatibilidad
+        // Guardar en config/license.key para retrocompatibilidad
         @file_put_contents(self::$keyFile, $token);
+
+        // Guardar PERMANENTEMENTE en la base de datos MySQL para que persista tras despliegues en Dokploy
+        try {
+            if (!class_exists('Database')) {
+                require_once dirname(__DIR__) . '/core/Database.php';
+            }
+            $db = new Database();
+            $conn = $db->getConnection();
+            if ($conn) {
+                // Asegurar existencia de la columna en la tabla empresa
+                @$conn->exec("ALTER TABLE empresa ADD COLUMN IF NOT EXISTS licencia_token TEXT NULL;");
+                $stmt = $conn->prepare("UPDATE empresa SET licencia_token = :tok WHERE id = 1");
+                $stmt->execute([':tok' => $token]);
+            }
+        } catch (Exception $e) {
+            // Ignorar excepciones de BD en guardado
+        }
     }
 
     private static function responderOBloquear($mensajeError) {
