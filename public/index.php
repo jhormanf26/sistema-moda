@@ -10,7 +10,10 @@ if (!function_exists('formatearCOP')) {
 }
 
 // 1. CONFIGURACIÓN DE URL DINÁMICA
-$protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https" : "http";
+$isHttps = (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] === 'on' || $_SERVER['HTTPS'] == 1))
+    || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) === 'https')
+    || (isset($_SERVER['HTTP_X_FORWARDED_SSL']) && strtolower($_SERVER['HTTP_X_FORWARDED_SSL']) === 'on');
+$protocol = $isHttps ? "https" : "http";
 $host = $_SERVER['HTTP_HOST'];
 $scriptDir = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME']));
 $folder = ($scriptDir === '/' || $scriptDir === '\\') ? '' : rtrim($scriptDir, '/');

@@ -265,6 +265,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+    const BASE_URL_APP = '<?= BASE_URL ?>'.replace(/^http:/, window.location.protocol);
+
     const listaProductosHTML = `<?php foreach ($productos as $p): ?>
         <option value="<?= $p['id'] ?>"><?= htmlspecialchars($p['nombre']) ?> (<?= $empresa['moneda'] ?? '$' ?> <?= number_format($p['precio_venta'], 2) ?>)</option>
     <?php endforeach; ?>`;
@@ -308,7 +310,7 @@
         e.preventDefault();
         const formData = new FormData(form);
 
-        fetch('<?= BASE_URL ?>/combo/guardar', {
+        fetch(`${BASE_URL_APP}/combo/guardar`, {
             method: 'POST',
             body: formData
         })
@@ -330,7 +332,7 @@
         formData.append('id', id);
         formData.append('estado', nuevoEstado);
 
-        fetch('<?= BASE_URL ?>/combo/cambiarEstado', {
+        fetch(`${BASE_URL_APP}/combo/cambiarEstado`, {
             method: 'POST',
             body: formData
         })
@@ -349,7 +351,7 @@
         const formData = new FormData();
         formData.append('id', id);
 
-        fetch('<?= BASE_URL ?>/combo/eliminar', {
+        fetch(`${BASE_URL_APP}/combo/eliminar`, {
             method: 'POST',
             body: formData
         })
