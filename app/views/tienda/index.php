@@ -22,15 +22,15 @@
                     colors: {
                         brand: {
                             navy: "#0F172A",
-                            orange: "#F97316",
-                            coral: "#fd651e",
+                            lilac: "#8B5CF6",
+                            purple: "#7C3AED",
                             green: "#10B981",
                             sky: "#38BDF8",
                             lightBg: "#f8f9ff"
                         },
                         "primary": "#0F172A",
-                        "secondary": "#F97316",
-                        "secondary-container": "#ea580c",
+                        "secondary": "#8B5CF6",
+                        "secondary-container": "#7C3AED",
                         "on-surface": "#0d1c2f",
                         "on-surface-variant": "#45464d",
                         "surface-container-low": "#eff4ff",
@@ -52,7 +52,7 @@
         .glass-header { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px); }
     </style>
 </head>
-<body class="bg-[#f8f9ff] font-sans text-[#0d1c2f] antialiased min-h-screen flex flex-col justify-between selection:bg-[#F97316]/20 selection:text-[#F97316] max-w-full overflow-x-hidden">
+<body class="bg-[#f8f9ff] font-sans text-[#0d1c2f] antialiased min-h-screen flex flex-col justify-between selection:bg-[#8B5CF6]/20 selection:text-[#7C3AED] max-w-full overflow-x-hidden">
 
 
 
@@ -63,7 +63,7 @@
         <div class="bg-slate-900 text-white text-[11px] sm:text-xs py-1.5 px-3 sm:px-8 overflow-hidden">
             <div class="max-w-[1440px] mx-auto flex items-center justify-between gap-2 min-w-0">
                 <div class="flex items-center gap-1.5 min-w-0 truncate">
-                    <span class="bg-[#F97316] text-white font-bold text-[9px] uppercase px-1.5 py-0.5 rounded flex-shrink-0">Aviso</span>
+                    <span class="bg-[#8B5CF6] text-white font-bold text-[9px] uppercase px-1.5 py-0.5 rounded flex-shrink-0">Aviso</span>
                     <span class="truncate text-slate-200">
                         Pedidos WhatsApp: <strong class="text-amber-400"><?= htmlspecialchars($empresa['telefono'] ?? '+52 55 1234 5678') ?></strong>
                     </span>
@@ -72,7 +72,7 @@
                     <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Horario: Lun - Sáb (8:00 AM - 9:00 PM)</span>
                     <span>|</span>
                     <a href="#sucursales" class="hover:text-white transition-colors flex items-center gap-1">
-                        <span class="material-symbols-outlined text-[14px] text-[#F97316]">location_on</span>
+                        <span class="material-symbols-outlined text-[14px] text-[#8B5CF6]">location_on</span>
                         <span>Ver Sucursales</span>
                     </a>
                 </div>
@@ -86,7 +86,7 @@
                 <?php if (!empty($empresa['logo']) && is_file('../public/' . ltrim($empresa['logo'], '/'))): ?>
                     <img src="<?= BASE_URL ?>/<?= htmlspecialchars(ltrim($empresa['logo'], '/')) ?>" alt="Logo" class="h-8 sm:h-10 w-auto object-contain flex-shrink-0">
                 <?php else: ?>
-                    <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-slate-900 flex items-center justify-center text-[#F97316] shadow-md flex-shrink-0">
+                    <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-slate-900 flex items-center justify-center text-[#8B5CF6] shadow-md flex-shrink-0">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 sm:w-6 sm:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
                             <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -98,7 +98,7 @@
                     <span class="font-headline font-extrabold text-sm sm:text-xl text-slate-900 leading-tight tracking-tight uppercase truncate">
                         <?= htmlspecialchars($empresa['nombre'] ?? 'VARIEDADES') ?>
                     </span>
-                    <span class="font-headline font-bold text-[9px] sm:text-[10px] text-[#F97316] tracking-widest uppercase -mt-0.5 truncate">
+                    <span class="font-headline font-bold text-[9px] sm:text-[10px] text-[#8B5CF6] tracking-widest uppercase -mt-0.5 truncate">
                         BEAUTY & ACCESSORIES
                     </span>
                 </div>
@@ -106,7 +106,7 @@
 
             <!-- Formulario de Búsqueda (Escritorio) -->
             <div class="flex-1 max-w-2xl hidden md:block">
-                <form action="<?= BASE_URL ?>/tienda" method="GET" class="flex items-center h-11 bg-slate-100 rounded-xl border border-slate-200 focus-within:border-[#F97316] focus-within:bg-white focus-within:ring-2 focus-within:ring-[#F97316]/20 transition-all overflow-hidden">
+                <form action="<?= BASE_URL ?>/tienda" method="GET" class="flex items-center h-11 bg-slate-100 rounded-xl border border-slate-200 focus-within:border-[#8B5CF6] focus-within:bg-white focus-within:ring-2 focus-within:ring-[#8B5CF6]/20 transition-all overflow-hidden">
                     <div class="relative flex items-center px-3 bg-slate-200/60 h-full text-xs font-semibold text-slate-700">
                         <span class="material-symbols-outlined text-[18px] mr-1 text-slate-500">category</span>
                         <select name="cat" onchange="this.form.submit()" class="bg-transparent focus:outline-none cursor-pointer text-slate-800 pr-2">
@@ -123,7 +123,7 @@
                         <span class="material-symbols-outlined absolute left-3 text-slate-400 text-[20px]">search</span>
                         <input type="text" name="q" value="<?= htmlspecialchars($_GET['q'] ?? '') ?>" placeholder="Buscar maquillaje, skincare, labiales, joyería, accesorios..." class="w-full h-full pl-10 pr-3 bg-transparent text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none">
                     </div>
-                    <button type="submit" class="h-full px-5 bg-[#F97316] hover:bg-[#ea580c] text-white font-bold text-sm flex items-center gap-1 transition-colors">
+                    <button type="submit" class="h-full px-5 bg-[#8B5CF6] hover:bg-[#7C3AED] text-white font-bold text-sm flex items-center gap-1 transition-colors">
                         <span class="material-symbols-outlined text-[18px]">search</span>
                         <span>Buscar</span>
                     </button>
@@ -133,17 +133,17 @@
             <!-- Acciones Header (Carrito / Login) -->
             <div class="flex items-center gap-2 flex-shrink-0">
                 <?php if (!isset($_SESSION['user_id'])): ?>
-                    <a href="<?= BASE_URL ?>/auth/index" class="hidden sm:flex items-center gap-1 px-3 py-2 text-xs font-semibold text-slate-700 hover:text-[#F97316] hover:bg-slate-100 rounded-lg transition-colors">
+                    <a href="<?= BASE_URL ?>/auth/index" class="hidden sm:flex items-center gap-1 px-3 py-2 text-xs font-semibold text-slate-700 hover:text-[#8B5CF6] hover:bg-slate-100 rounded-lg transition-colors">
                         <span class="material-symbols-outlined text-[20px]">lock</span>
                         <span>Acceso Admin</span>
                     </a>
                 <?php endif; ?>
 
                 <!-- Botón Carrito de Compras -->
-                <button onclick="toggleCartDrawer()" class="flex items-center gap-2 bg-orange-50 hover:bg-orange-100 border border-orange-200/80 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-xl transition-all shadow-sm group">
+                <button onclick="toggleCartDrawer()" class="flex items-center gap-2 bg-purple-50 hover:bg-purple-100 border border-purple-200/80 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-xl transition-all shadow-sm group">
                     <div class="relative">
                         <span class="material-symbols-outlined text-slate-800 group-hover:scale-110 transition-transform text-[22px] sm:text-[24px]">shopping_bag</span>
-                        <span id="cart-badge-count" class="absolute -top-2 -right-2 bg-[#F97316] text-white text-[10px] font-bold w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center shadow-sm">0</span>
+                        <span id="cart-badge-count" class="absolute -top-2 -right-2 bg-[#8B5CF6] text-white text-[10px] font-bold w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center shadow-sm">0</span>
                     </div>
                     <div class="hidden sm:flex flex-col text-left leading-tight">
                         <span class="text-[11px] font-medium text-slate-500">Mi Carrito</span>
@@ -160,7 +160,7 @@
                     Todos los productos
                 </a>
                 <?php foreach ($categorias as $cat): ?>
-                    <a href="<?= BASE_URL ?>/tienda?cat=<?= $cat['id'] ?>" class="px-3 py-1.5 rounded-lg hover:bg-slate-100 hover:text-[#F97316] <?= (isset($_GET['cat']) && $_GET['cat'] == $cat['id']) ? 'bg-[#F97316] text-white font-bold' : '' ?> transition-colors">
+                    <a href="<?= BASE_URL ?>/tienda?cat=<?= $cat['id'] ?>" class="px-3 py-1.5 rounded-lg hover:bg-slate-100 hover:text-[#8B5CF6] <?= (isset($_GET['cat']) && $_GET['cat'] == $cat['id']) ? 'bg-[#8B5CF6] text-white font-bold' : '' ?> transition-colors">
                         <?= htmlspecialchars($cat['nombre']) ?>
                     </a>
                 <?php endforeach; ?>
@@ -169,10 +169,10 @@
 
         <!-- Buscador Responsivo Móvil -->
         <div class="px-3 py-2 bg-slate-50 border-t border-slate-100 md:hidden">
-            <form action="<?= BASE_URL ?>/tienda" method="GET" class="flex items-center h-10 bg-white rounded-xl border border-slate-200 focus-within:border-[#F97316] shadow-xs px-3 gap-2">
+            <form action="<?= BASE_URL ?>/tienda" method="GET" class="flex items-center h-10 bg-white rounded-xl border border-slate-200 focus-within:border-[#8B5CF6] shadow-xs px-3 gap-2">
                 <span class="material-symbols-outlined text-slate-400 text-[18px]">search</span>
                 <input type="text" name="q" value="<?= htmlspecialchars($_GET['q'] ?? '') ?>" placeholder="Buscar productos..." class="w-full bg-transparent text-xs text-slate-800 focus:outline-none">
-                <button type="submit" class="text-[#F97316] font-bold text-xs px-1">Buscar</button>
+                <button type="submit" class="text-[#8B5CF6] font-bold text-xs px-1">Buscar</button>
             </form>
         </div>
     </header>
@@ -251,7 +251,7 @@
                         <a href="#catalogo" class="font-bold text-xs text-purple-700 hover:underline flex items-center gap-1">
                             Ver Accesorios <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
                         </a>
-                        <span class="w-9 h-9 rounded-full bg-white shadow-sm flex items-center justify-center text-[#F97316]">
+                        <span class="w-9 h-9 rounded-full bg-white shadow-sm flex items-center justify-center text-[#8B5CF6]">
                             <span class="material-symbols-outlined text-[20px]">diamond</span>
                         </span>
                     </div>
@@ -303,15 +303,15 @@
         <section class="space-y-4">
             <div class="flex items-end justify-between">
                 <div>
-                    <span class="text-xs font-bold text-[#F97316] uppercase tracking-wider">Explora el catálogo</span>
+                    <span class="text-xs font-bold text-[#8B5CF6] uppercase tracking-wider">Explora el catálogo</span>
                     <h2 class="font-headline font-extrabold text-xl sm:text-2xl text-slate-900">Categorías Destacadas</h2>
                 </div>
             </div>
 
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
                 <?php foreach ($categorias as $index => $cat): ?>
-                    <a href="<?= BASE_URL ?>/tienda?cat=<?= $cat['id'] ?>" class="bg-white hover:bg-orange-50/50 border border-slate-200/80 hover:border-orange-300 rounded-2xl p-4 text-center shadow-sm hover:shadow-md transition-all flex flex-col items-center group">
-                        <div class="w-14 h-14 rounded-2xl bg-slate-100 text-slate-800 group-hover:bg-[#F97316] group-hover:text-white transition-all flex items-center justify-center mb-3">
+                    <a href="<?= BASE_URL ?>/tienda?cat=<?= $cat['id'] ?>" class="bg-white hover:bg-purple-50/50 border border-slate-200/80 hover:border-purple-300 rounded-2xl p-4 text-center shadow-sm hover:shadow-md transition-all flex flex-col items-center group">
+                        <div class="w-14 h-14 rounded-2xl bg-slate-100 text-slate-800 group-hover:bg-[#8B5CF6] group-hover:text-white transition-all flex items-center justify-center mb-3">
                             <span class="material-symbols-outlined text-[28px]">
                                 <?php 
                                     $icons = ['category', 'edit_note', 'build', 'cable', 'home', 'cookie', 'soap', 'style', 'local_mall'];
@@ -319,7 +319,7 @@
                                 ?>
                             </span>
                         </div>
-                        <span class="font-headline font-bold text-xs text-slate-800 group-hover:text-[#F97316] transition-colors line-clamp-1">
+                        <span class="font-headline font-bold text-xs text-slate-800 group-hover:text-[#8B5CF6] transition-colors line-clamp-1">
                             <?= htmlspecialchars($cat['nombre']) ?>
                         </span>
                         <span class="text-[11px] text-slate-500 mt-0.5"><?= $cat['total_productos'] ?? 0 ?> productos</span>
@@ -436,7 +436,7 @@
         <section id="catalogo" class="space-y-6 pt-4">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
                 <div>
-                    <span class="text-xs font-bold text-[#F97316] uppercase tracking-wider">Productos Disponibles</span>
+                    <span class="text-xs font-bold text-[#8B5CF6] uppercase tracking-wider">Productos Disponibles</span>
                     <h2 class="font-headline font-extrabold text-2xl text-slate-900">
                         <?= !empty($_GET['cat']) ? 'Filtrado por Categoría' : 'Catálogo General' ?>
                     </h2>
@@ -445,7 +445,7 @@
                 <!-- Buscador rápido en vivo -->
                 <div class="relative w-full sm:w-72">
                     <span class="material-symbols-outlined absolute left-3 top-2.5 text-slate-400 text-[18px]">search</span>
-                    <input type="text" id="live-search" placeholder="Filtrar productos..." onkeyup="filtrarProductosEnVivo()" class="w-full pl-9 pr-3 py-2 bg-white border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-[#F97316] shadow-sm">
+                    <input type="text" id="live-search" placeholder="Filtrar productos..." onkeyup="filtrarProductosEnVivo()" class="w-full pl-9 pr-3 py-2 bg-white border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-[#8B5CF6] shadow-sm">
                 </div>
             </div>
 
@@ -475,7 +475,7 @@
                                                 <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> Agotado
                                                </span>';
                             } else if ($stock <= 10) {
-                                $badgeTop = '<span class="absolute top-2 left-2 z-10 bg-gradient-to-r from-amber-500 to-orange-600 text-white font-extrabold text-[9px] sm:text-[10px] px-2 py-0.5 rounded-full shadow uppercase flex items-center gap-0.5">
+                                $badgeTop = '<span class="absolute top-2 left-2 z-10 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-extrabold text-[9px] sm:text-[10px] px-2 py-0.5 rounded-full shadow uppercase flex items-center gap-0.5">
                                                 <span class="material-symbols-outlined text-[11px] sm:text-[13px]">local_fire_department</span> Pocas Unidades
                                              </span>';
                                 $stockLabel = '<span class="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] font-extrabold bg-amber-100 text-amber-800 border border-amber-300 animate-pulse">
@@ -520,7 +520,7 @@
                                 </div>
 
                                 <!-- Nombre del Producto -->
-                                <h3 class="font-headline font-semibold text-slate-900 text-sm group-hover:text-[#F97316] transition-colors line-clamp-2 leading-snug">
+                                <h3 class="font-headline font-semibold text-slate-900 text-sm group-hover:text-[#8B5CF6] transition-colors line-clamp-2 leading-snug">
                                     <?= htmlspecialchars($p['nombre']) ?>
                                 </h3>
 
@@ -531,7 +531,7 @@
 
                                 <!-- Precio -->
                                 <div class="mt-3 flex items-baseline gap-2">
-                                    <span class="font-headline font-extrabold text-xl text-[#F97316]">
+                                    <span class="font-headline font-extrabold text-xl text-[#7C3AED]">
                                         <?= $empresa['moneda'] ?? 'S/' ?> <?= number_format($p['precio_venta'], 2) ?>
                                     </span>
                                 </div>
@@ -540,7 +540,7 @@
                             <!-- Botones de Acción -->
                             <div class="pt-4 flex gap-2">
                                 <?php if ($stock > 0): ?>
-                                    <button onclick="agregarAlCarrito(<?= htmlspecialchars(json_encode($p)) ?>)" class="flex-1 bg-[#F97316] hover:bg-[#ea580c] text-white font-headline font-bold text-xs py-2.5 rounded-xl flex items-center justify-center gap-1.5 transition-all shadow-sm active:scale-95">
+                                    <button onclick="agregarAlCarrito(<?= htmlspecialchars(json_encode($p)) ?>)" class="flex-1 bg-[#8B5CF6] hover:bg-[#7C3AED] text-white font-headline font-bold text-xs py-2.5 rounded-xl flex items-center justify-center gap-1.5 transition-all shadow-sm active:scale-95">
                                         <span class="material-symbols-outlined text-[18px]">add_shopping_cart</span>
                                         <span>Agregar</span>
                                     </button>
@@ -577,15 +577,15 @@
                 <h4 class="font-headline font-bold text-sm text-amber-400">Sucursal & Atención</h4>
                 <ul class="text-xs text-slate-300 space-y-2">
                     <li class="flex items-center gap-2">
-                        <span class="material-symbols-outlined text-[16px] text-[#F97316]">location_on</span>
+                        <span class="material-symbols-outlined text-[16px] text-[#8B5CF6]">location_on</span>
                         <span><?= htmlspecialchars($empresa['direccion'] ?? 'Dirección Principal') ?></span>
                     </li>
                     <li class="flex items-center gap-2">
-                        <span class="material-symbols-outlined text-[16px] text-[#F97316]">phone</span>
+                        <span class="material-symbols-outlined text-[16px] text-[#8B5CF6]">phone</span>
                         <span>Teléfono: <?= htmlspecialchars($empresa['telefono'] ?? '0000000') ?></span>
                     </li>
                     <li class="flex items-center gap-2">
-                        <span class="material-symbols-outlined text-[16px] text-[#F97316]">mail</span>
+                        <span class="material-symbols-outlined text-[16px] text-[#8B5CF6]">mail</span>
                         <span><?= htmlspecialchars($empresa['email'] ?? 'contacto@tienda.com') ?></span>
                     </li>
                 </ul>
@@ -619,7 +619,7 @@
         <!-- Header del Carrito -->
         <div class="p-4 border-b border-slate-200 flex items-center justify-between bg-slate-900 text-white">
             <div class="flex items-center gap-2">
-                <span class="material-symbols-outlined text-[#F97316]">shopping_bag</span>
+                <span class="material-symbols-outlined text-[#8B5CF6]">shopping_bag</span>
                 <h3 class="font-headline font-bold text-sm">Tu Carrito de Compras</h3>
             </div>
             <button onclick="toggleCartDrawer()" class="text-slate-400 hover:text-white transition-colors">
@@ -636,7 +636,7 @@
         <div class="p-4 border-t border-slate-200 bg-slate-50 space-y-3">
             <div class="flex justify-between items-center text-sm font-semibold text-slate-800">
                 <span>Total a Pagar:</span>
-                <span id="cart-drawer-total" class="font-headline font-extrabold text-lg text-[#F97316]"><?= $empresa['moneda'] ?? 'S/' ?> 0.00</span>
+                <span id="cart-drawer-total" class="font-headline font-extrabold text-lg text-[#7C3AED]"><?= $empresa['moneda'] ?? 'S/' ?> 0.00</span>
             </div>
 
             <button onclick="enviarPedidoWhatsapp()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-headline font-bold text-xs py-3 rounded-xl flex items-center justify-center gap-2 transition-colors shadow-md">
@@ -763,7 +763,7 @@
                         <img src="${imgRuta}" class="w-14 h-14 object-cover rounded-lg bg-white border">
                         <div class="flex-1 min-w-0">
                             <h4 class="text-xs font-semibold text-slate-800 truncate">${item.nombre}</h4>
-                            <div class="text-xs text-[#F97316] font-bold">${MONEDA} ${item.precio.toFixed(2)}</div>
+                            <div class="text-xs text-[#7C3AED] font-bold">${MONEDA} ${item.precio.toFixed(2)}</div>
                             <div class="flex items-center gap-2 mt-1">
                                 <button onclick="cambiarCantidad('${item.key}', -1)" class="w-5 h-5 bg-slate-200 rounded flex items-center justify-center text-xs font-bold">-</button>
                                 <span class="text-xs font-bold">${item.cantidad}</span>
@@ -813,11 +813,11 @@
         function seleccionarVarianteModal(variante, btnElement) {
             varianteActual = variante;
             document.querySelectorAll('.qv-var-btn').forEach(b => {
-                b.classList.remove('bg-[#F97316]', 'text-white', 'border-[#F97316]');
+                b.classList.remove('bg-[#8B5CF6]', 'text-white', 'border-[#8B5CF6]');
                 b.classList.add('bg-slate-50', 'text-slate-700', 'border-slate-200');
             });
             btnElement.classList.remove('bg-slate-50', 'text-slate-700', 'border-slate-200');
-            btnElement.classList.add('bg-[#F97316]', 'text-white', 'border-[#F97316]');
+            btnElement.classList.add('bg-[#8B5CF6]', 'text-white', 'border-[#8B5CF6]');
 
             const stockEl = document.getElementById('qv-var-stock');
             if (stockEl) {
@@ -869,7 +869,7 @@
                                             return `
                                                 <button type="button" 
                                                         onclick='seleccionarVarianteModal(${JSON.stringify(v)}, this)' 
-                                                        class="qv-var-btn px-3 py-1.5 rounded-xl border text-xs font-headline font-bold transition-all ${idx === 0 ? 'bg-[#F97316] text-white border-[#F97316]' : 'bg-slate-50 text-slate-700 border-slate-200'} ${disabled}">
+                                                        class="qv-var-btn px-3 py-1.5 rounded-xl border text-xs font-headline font-bold transition-all ${idx === 0 ? 'bg-[#8B5CF6] text-white border-[#8B5CF6]' : 'bg-slate-50 text-slate-700 border-slate-200'} ${disabled}">
                                                     ${label} ${parseInt(v.stock_actual) <= 0 ? '(Agotado)' : ''}
                                                 </button>
                                             `;
@@ -883,13 +883,13 @@
                             <div>${galeriaHTML}</div>
                             <div class="flex flex-col justify-between space-y-4">
                                 <div class="space-y-2">
-                                    <span class="text-xs font-bold text-[#F97316] uppercase">${p.categoria_nombre || 'General'}</span>
+                                    <span class="text-xs font-bold text-[#8B5CF6] uppercase">${p.categoria_nombre || 'General'}</span>
                                     <h3 class="font-headline font-bold text-xl text-slate-900">${p.nombre}</h3>
-                                    <div class="font-headline font-extrabold text-2xl text-[#F97316]">${MONEDA} ${parseFloat(p.precio_venta).toFixed(2)}</div>
+                                    <div class="font-headline font-extrabold text-2xl text-[#7C3AED]">${MONEDA} ${parseFloat(p.precio_venta).toFixed(2)}</div>
                                     <p class="text-xs text-slate-600 leading-relaxed">${p.descripcion || 'Sin descripción adicional.'}</p>
                                     ${variantesHTML}
                                 </div>
-                                <button onclick='agregarAlCarrito(productoActualModal, varianteActual); cerrarQuickView();' class="w-full bg-[#F97316] hover:bg-[#ea580c] text-white font-headline font-bold text-xs py-3 rounded-xl flex items-center justify-center gap-2 shadow-md active:scale-95 transition-all">
+                                <button onclick='agregarAlCarrito(productoActualModal, varianteActual); cerrarQuickView();' class="w-full bg-[#8B5CF6] hover:bg-[#7C3AED] text-white font-headline font-bold text-xs py-3 rounded-xl flex items-center justify-center gap-2 shadow-md active:scale-95 transition-all">
                                     <span class="material-symbols-outlined text-[18px]">add_shopping_cart</span>
                                     <span>Agregar al Carrito</span>
                                 </button>
