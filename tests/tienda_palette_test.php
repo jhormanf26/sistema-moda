@@ -29,10 +29,10 @@ foreach ($orangePatterns as $pattern) {
     }
 }
 
-// 2. Validar que existan los nuevos colores lila y morado
+// 2. Validar que existan los nuevos colores lila y morado solicitados (#c267de)
 $requiredLilacPurple = [
-    '#8B5CF6',
-    '#7C3AED',
+    '#c267de',
+    '#ab51c8',
     'bg-purple-50',
     'border-purple-200/80',
     'hover:border-purple-300'
@@ -45,5 +45,5 @@ foreach ($requiredLilacPurple as $required) {
     }
 }
 
-echo "SUCCESS: Todos los colores naranjas fueron reemplazados exitosamente por la paleta lila / morado (#8B5CF6 / #7C3AED / purple-50).\n";
+echo "SUCCESS: Todos los elementos fueron actualizados exitosamente al color lila/morado #c267de.\n";
 exit(0);
